@@ -1,0 +1,22 @@
+Title: Mr
+First Name: Andile
+Middle Name: Joseph
+Last Name: Danse
+Gender: Male
+Date of Birth: 02/11/1984
+Age: 41
+ID Number: 8411025333080
+Marital Status: Single
+Phone Number: 0837569111
+Email Address: andiledanse@outlook.com
+House Number: 16
+Street Name: khetshane crescent
+Town: Kwanobuhle
+City: Uitenhage
+Postal Code: 6242
+Province: Eastern cape
+Clock ID: 123456
+Position: Operator
+Start Date: 02/11/2025
+Department: Bakery
+--------------------------------------

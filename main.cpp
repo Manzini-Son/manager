@@ -92,7 +92,7 @@ bool isValidTitle (const string &title) {
     }
 }
 bool isValidName (const string &name) {
-    if (name.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") == string::npos) {
+    if (!name.empty() && name.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ") == string::npos) {
         return true;
     } else {
         return false;
@@ -113,7 +113,10 @@ bool isValidAge (const string &age) {
     }
 }
 bool isValidDate (const string &date) {
-    if (date.length() != 10 || date[2] != '/' || date[5] != '/') {
+    if (date.length() != 10 || date[2] != '/' || date[5] != '/' ||
+        date.substr(0, 2).find_first_not_of("0123456789") != string::npos ||
+        date.substr(3, 2).find_first_not_of("0123456789") != string::npos ||
+        date.substr(6, 4).find_first_not_of("0123456789") != string::npos) {
         return false;
     } else {
         return true;
@@ -155,11 +158,11 @@ bool isValidPostalCode (const string &postalCode) {
     }
 }
 bool isValidProvince (const string &province) {
-    if (province != "Eastern cape" || province != "Free state" || province != "Gauteng" || province != "Limpopo" || province != "Mpumalanga" || province != "KwaZulu natal" || province != "North west" || province != "Northern cape" || province != "Western cape") {
-        return false;
-    } else {
-        return true;
-    }
+    return province == "Eastern cape" || province == "Free state" ||
+           province == "Gauteng" || province == "Limpopo" ||
+           province == "Mpumalanga" || province == "KwaZulu natal" ||
+           province == "North west" || province == "Northern cape" ||
+           province == "Western cape";
 }
 bool isValidClockId (const string &clockId) {
     if (clockId.length() != 6 || clockId.find_first_not_of("0123456789") != string::npos) {
@@ -187,36 +190,41 @@ void saveEmployeeData(Employee &employee);
 void captureEmployeeData(Employee &employee);
 void addEmployeeData(Employee &employee);
 void viewEmployeeData(Employee &employee);
-//void updateEmployeeData(Employee &employee);
-//void deleteEmployeeData(Employee &employee);
-//void viewAllEmployeeData();
+void updateEmployeeData(Employee &employee);
+void deleteEmployeeData(Employee &employee);
+void viewAllEmployeeData(Employee &employee);
 //void stockUpStore();
 string capitaliseFirstLetter (string word) {
-    word[0] = toupper(word[0]);
+    if (!word.empty()) {
+        word[0] = static_cast<char>(toupper(static_cast<unsigned char>(word[0])));
+    }
     return word;
 }
 // Function to create employee database file if it does not exist
 void createEmployeeDataBaseFile() {
-    fstream employeeDatabaseFile;
-    employeeDatabaseFile.open("employeeDatabase.txt", ios::out);
-    employeeDatabaseFile.close();
+    ifstream existingFile("employeeDatabase.txt");
+    if (!existingFile.good()) {
+        ofstream employeeDatabaseFile("employeeDatabase.txt");
+    }
 }
 // Function to create sales database file if it does not exist
 void createSalesDataBaseFile() {
-    fstream salesDatabaseFile;
-    salesDatabaseFile.open("salesDatabase.txt", ios::out);
-    salesDatabaseFile.close();
+    ifstream existingFile("salesDatabase.txt");
+    if (!existingFile.good()) {
+        ofstream salesDatabaseFile("salesDatabase.txt");
+    }
 }
 // Function to create stock database file if it does not exist
 void createStockDataBaseFile() {
-    fstream stockDatabaseFile;
-    stockDatabaseFile.open("stockDatabase.txt", ios::out);
-    stockDatabaseFile.close();
+    ifstream existingFile("stockDatabase.txt");
+    if (!existingFile.good()) {
+        ofstream stockDatabaseFile("stockDatabase.txt");
+    }
 }
 // Function to save employee data
 void saveEmployeeData(Employee &employee) {
     cout << "Saving employee data...\n";
-    ofstream outFile("employees.txt", ios::app);
+    ofstream outFile("employeeDatabase.txt", ios::app);
     if (!outFile) {
         cerr << "Error opening file\n";
         return;
@@ -287,14 +295,14 @@ void accessEmployeeInformation(Employee &employee) {
             addEmployeeData(employee);
             break;
         case 3:
-            //updateEmployeeData(employee);
+            updateEmployeeData(employee);
             break;
         case 4:
-            //deleteEmployeeData(employee);
+            deleteEmployeeData(employee);
             break;
 
         case 5:
-            //viewAllEmployeeData();
+            viewAllEmployeeData(employee);
             break;
         case 0:
             cout << "Exiting...\n";
@@ -302,6 +310,160 @@ void accessEmployeeInformation(Employee &employee) {
         default:
             cout << "Invalid option. Please try again.\n";
             break;
+    }
+}
+// Function to view all employee data
+void viewAllEmployeeData(Employee &) {
+    cout << "Viewing all employee data...\n";
+    ifstream inFile("employeeDatabase.txt");
+    if (!inFile) {
+        cerr << "Error opening file\n";
+        return;
+    }
+    string line;
+    while (getline(inFile, line)) {
+        cout << line << "\n";
+    }
+    inFile.close();
+}
+// Function to remove employee data
+void deleteEmployeeData(Employee &employee) {
+    cout << "Removing employee data...\n";
+    cout << "Enter clock ID to remove employee data: ";
+    string clockId;
+    getline(cin, clockId);
+    while (!isValidClockId(clockId)) {
+        cerr << "Invalid clock ID. Please enter a valid clock ID (6 digits).\n";
+        cout << "Enter clock ID to remove employee data: ";
+        getline(cin, clockId);
+    }
+    employee.clockId = clockId;
+    ifstream inFile("employeeDatabase.txt");
+    ofstream outFile("temp.txt");
+    if (!inFile || !outFile) {
+        cerr << "Error opening employee database\n";
+        return;
+    }
+    string line;
+    vector<string> record;
+    bool removed = false;
+    while (getline(inFile, line)) {
+        if (line == "--------------------------------------") {
+            bool matches = false;
+            for (const string &recordLine : record) {
+                if (recordLine == "Clock ID: " + clockId) {
+                    matches = true;
+                    break;
+                }
+            }
+            if (!matches) {
+                for (const string &recordLine : record) {
+                    outFile << recordLine << "\n";
+                }
+                outFile << line << "\n";
+            } else {
+                removed = true;
+            }
+            record.clear();
+        } else {
+            record.push_back(line);
+        }
+    }
+    for (const string &recordLine : record) {
+        outFile << recordLine << "\n";
+    }
+    inFile.close();
+    outFile.close();
+    if (removed) {
+        remove("employeeDatabase.txt");
+        rename("temp.txt", "employeeDatabase.txt");
+        cout << "Employee data removed successfully.\n";
+    } else {
+        remove("temp.txt");
+        cout << "Employee data not found.\n";
+    }
+}
+// Function to update employee data
+void updateEmployeeData(Employee &employee) {
+    cout << "Updating employee data...\n";
+    cout << "Enter clock ID to update employee data: ";
+    string clockId;
+    getline(cin, clockId);
+    while (!isValidClockId(clockId)) {
+        cerr << "Invalid clock ID. Please enter a valid clock ID (6 digits).\n";
+        cout << "Enter clock ID to update employee data: ";
+        getline(cin, clockId);
+    }
+    employee.clockId = clockId;
+    ifstream inFile("employeeDatabase.txt");
+    ofstream outFile("temp.txt");
+    if (!inFile || !outFile) {
+        cerr << "Error opening employee database\n";
+        return;
+    }
+    string line;
+    vector<string> record;
+    bool updated = false;
+    while (getline(inFile, line)) {
+        if (line == "--------------------------------------") {
+            bool matches = false;
+            for (const string &recordLine : record) {
+                if (recordLine == "Clock ID: " + clockId) {
+                    matches = true;
+                    break;
+                }
+            }
+            if (matches) {
+                captureEmployeeData(employee);
+                updated = true;
+                outFile << "Clock ID: " << employee.clockId << "\n";
+                outFile << "Title: " << employee.title << "\n";
+                outFile << "First Name: " << employee.firstName << "\n";
+                outFile << "Last Name: " << employee.lastName << "\n";
+                outFile << "Gender: " << employee.gender << "\n";
+                outFile << "Date of Birth: " << employee.dateOfBirth << "\n";
+                outFile << "Age: " << employee.age << "\n";
+                outFile << "ID Number: " << employee.idNumber << "\n";
+                outFile << "Marital Status: " << employee.maritalStatus << "\n";
+                if (employee.maritalStatus == "Married") {
+                    outFile << "Spouse First Name: " << employee.spouseFirstName << "\n";
+                    outFile << "Spouse Last Name: " << employee.spouseLastName << "\n";
+                    outFile << "Spouse Phone Number: " << employee.spousePhoneNumber << "\n";
+                }
+                outFile << "Phone Number: " << employee.phoneNumber << "\n";
+                outFile << "Email Address: " << employee.emailAddress << "\n";
+                outFile << "House Number: " << employee.houseNumber << "\n";
+                outFile << "Street Name: " << employee.streetName << "\n";
+                outFile << "Town: " << employee.town << "\n";
+                outFile << "City: " << employee.city << "\n";
+                outFile << "Postal Code: " << employee.postalCode << "\n";
+                outFile << "Province: " << employee.province << "\n";
+                outFile << "Position: " << employee.position << "\n";
+                outFile << "Start Date: " << employee.startDate << "\n";
+                outFile << "Department: " << employee.department << "\n";
+            } else {
+                for (const string &recordLine : record) {
+                    outFile << recordLine << "\n";
+                }
+            }
+            outFile << line << "\n";
+            record.clear();
+        } else {
+            record.push_back(line);
+        }
+    }
+    for (const string &recordLine : record) {
+        outFile << recordLine << "\n";
+    }
+    inFile.close();
+    outFile.close();
+    if (updated) {
+        remove("employeeDatabase.txt");
+        rename("temp.txt", "employeeDatabase.txt");
+        cout << "Employee data updated successfully.\n";
+    } else {
+        remove("temp.txt");
+        cout << "Employee data not found.\n";
     }
 }
 // Function to add employee data
@@ -312,7 +474,6 @@ void addEmployeeData(Employee &employee) {
 // Function to capture employee data
 void captureEmployeeData(Employee &employee) {
     cout << "Capturing employee data...\n";
-    string title;
     cout << "Title: ";
     getline(cin, employee.title);
     employee.title = capitaliseFirstLetter(employee.title);
@@ -322,9 +483,7 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.title);
         employee.title = capitaliseFirstLetter(employee.title);
     }
-    employee.title = title;
     cout << "First Name: ";
-    string firstName;
     getline(cin, employee.firstName);
     employee.firstName = capitaliseFirstLetter(employee.firstName);
     while (!isValidName(employee.firstName)) {
@@ -333,9 +492,7 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.firstName);
         employee.firstName = capitaliseFirstLetter(employee.firstName);
     }
-    employee.firstName = firstName;
     cout << "Middle Name: ";
-    string middleName;
     getline(cin, employee.middleName);
     employee.middleName = capitaliseFirstLetter(employee.middleName);
     while (!isValidName(employee.middleName)) {
@@ -347,9 +504,7 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.middleName);
         employee.middleName = capitaliseFirstLetter(employee.middleName);
     }
-    employee.middleName = middleName;
     cout << "Last Name: ";
-    string lastName;
     getline(cin, employee.lastName);
     employee.lastName = capitaliseFirstLetter(employee.lastName);
     while (!isValidName(employee.lastName)) {
@@ -358,9 +513,7 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.lastName);
         employee.lastName = capitaliseFirstLetter(employee.lastName);
     }
-    employee.lastName = lastName;
     cout << "Gender: ";
-    string gender;
     getline(cin, employee.gender);
     employee.gender = capitaliseFirstLetter(employee.gender);
     while (!isValidGender(employee.gender)) {
@@ -369,9 +522,7 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.gender);
         employee.gender = capitaliseFirstLetter(employee.gender);
     }
-    employee.gender = gender;
     cout << "Date of Birth: ";
-    string dateOfBirth;
     getline(cin, employee.dateOfBirth);
     employee.dateOfBirth = capitaliseFirstLetter(employee.dateOfBirth);
     while (!isValidDate(employee.dateOfBirth)) {
@@ -379,9 +530,7 @@ void captureEmployeeData(Employee &employee) {
         cout << "Date of Birth: ";
         getline(cin, employee.dateOfBirth);
     }
-    employee.dateOfBirth = dateOfBirth;
     cout << "Age: ";
-    int age;
     cin >> employee.age;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     while (cin.fail() || employee.age < 18 || employee.age > 60) {
@@ -392,21 +541,14 @@ void captureEmployeeData(Employee &employee) {
         cin >> employee.age;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-    employee.age = age;
     cout << "ID Number: ";
-    string idNumber;
     getline(cin, employee.idNumber);
     while (!isValidIdNumber(employee.idNumber)) {
         cerr << "Invalid ID number. Please enter a valid ID number (13 digits).\n";
         cout << "ID Number: ";
         getline(cin, employee.idNumber);
     }
-    employee.idNumber = idNumber;
-    string spouseFirstName;
-    string spouseLastName;
-    string spouseDateOfBirth;
     cout << "Marital Status: ";
-    string maritalStatus;
     getline(cin, employee.maritalStatus);
     employee.maritalStatus = capitaliseFirstLetter(employee.maritalStatus);
     while (!isValidMaritalStatus(employee.maritalStatus)) {
@@ -415,9 +557,8 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.maritalStatus);
         employee.maritalStatus = capitaliseFirstLetter(employee.maritalStatus);
     }
-    if (maritalStatus == "Married") {
+    if (employee.maritalStatus == "Married") {
         cout << "Spouse First Name: ";
-        string spouseFirstName;
         getline(cin, employee.spouseFirstName);
         employee.spouseFirstName = capitaliseFirstLetter(employee.spouseFirstName);
         while (!isValidName(employee.spouseFirstName)) {
@@ -426,9 +567,7 @@ void captureEmployeeData(Employee &employee) {
             getline(cin, employee.spouseFirstName);
             employee.spouseFirstName = capitaliseFirstLetter(employee.spouseFirstName);
         }
-        employee.spouseFirstName = spouseFirstName;
         cout << "Spouse Last Name: ";
-        string spouseLastName;
         getline(cin, employee.spouseLastName);
         employee.spouseLastName = capitaliseFirstLetter(employee.spouseLastName);
         while (!isValidName(employee.spouseLastName)) {
@@ -437,9 +576,7 @@ void captureEmployeeData(Employee &employee) {
             getline(cin, employee.spouseLastName);
             employee.spouseLastName = capitaliseFirstLetter(employee.spouseLastName);
         }
-        employee.spouseLastName = spouseLastName;
         cout << "Spouse Phone Number: ";
-        string spousePhoneNumber;
         getline(cin, employee.spousePhoneNumber);
         while (!isValidPhoneNumber(employee.spousePhoneNumber)) {
             if (employee.spousePhoneNumber.empty()) {
@@ -449,11 +586,8 @@ void captureEmployeeData(Employee &employee) {
             cout << "Spouse Phone Number: ";
             getline(cin, employee.spousePhoneNumber);
         }
-        employee.spousePhoneNumber = spousePhoneNumber;
     }
-    employee.maritalStatus = maritalStatus;
     cout << "Phone Number: ";
-    string phoneNumber;
     getline(cin, employee.phoneNumber);
     while (!isValidPhoneNumber(employee.phoneNumber)) {
         if (employee.phoneNumber.empty()) {
@@ -463,9 +597,7 @@ void captureEmployeeData(Employee &employee) {
         cout << "Phone Number: ";
         getline(cin, employee.phoneNumber);
     }
-    employee.phoneNumber = phoneNumber;
     cout << "Email Address: ";
-    string emailAddress;
     getline(cin, employee.emailAddress);
     while (!isValidEmail(employee.emailAddress)) {
         if (employee.emailAddress.empty()) {
@@ -475,27 +607,21 @@ void captureEmployeeData(Employee &employee) {
         cout << "Email Address: ";
         getline(cin, employee.emailAddress);
     }
-    employee.emailAddress = emailAddress;
     cout << "House Number: ";
-    string houseNumber;
     getline(cin, employee.houseNumber);
-    while (houseNumber.empty()) {
+    while (employee.houseNumber.empty()) {
         cerr << "Invalid house number. Please enter a valid house number.\n";
         cout << "House Number: ";
         getline(cin, employee.houseNumber);
     }
-    employee.houseNumber = houseNumber;
     cout << "Street Name: ";
-    string streetName;
     getline(cin, employee.streetName);
-    while (streetName.empty()) {
+    while (employee.streetName.empty()) {
         cerr << "Invalid street name. Please enter a valid street name.\n";
         cout << "Street Name: ";
         getline(cin, employee.streetName);
     }
-    employee.streetName = streetName;
     cout << "Town: ";
-    string town;
     getline(cin, employee.town);
     employee.town = capitaliseFirstLetter(employee.town);
     while (!isValidName(employee.town)) {
@@ -504,9 +630,7 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.town);
         employee.town = capitaliseFirstLetter(employee.town);
     }
-    employee.town = town;
     cout << "City: ";
-    string city;
     getline(cin, employee.city);
     employee.city = capitaliseFirstLetter(employee.city);
     while (!isValidName(employee.city)) {
@@ -515,18 +639,14 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.city);
         employee.city = capitaliseFirstLetter(employee.city);
     }
-    employee.city = city;
     cout << "Postal Code: ";
-    string postalCode;
     getline(cin, employee.postalCode);
     while (!isValidPostalCode(employee.postalCode)) {
         cerr << "Invalid postal code. Please enter a valid postal code (4-6 digits).\n";
         cout << "Postal Code: ";
         getline(cin, employee.postalCode);
     }
-    employee.postalCode = postalCode;
     cout << "Province: ";
-    string province;
     getline(cin, employee.province);
     employee.province = capitaliseFirstLetter(employee.province);
     while (!isValidProvince(employee.province)) {
@@ -535,18 +655,14 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.province);
         employee.province = capitaliseFirstLetter(employee.province);
     }
-    employee.province = province;
     cout << "Clock ID: ";
-    string clockId;
     getline(cin, employee.clockId);
     while (!isValidClockId(employee.clockId)) {
         cerr << "Invalid clock ID. Please enter a valid clock ID (6 digits).\n";
         cout << "Clock ID: ";
         getline(cin, employee.clockId);
     }
-    employee.clockId = clockId;
     cout << "Position: ";
-    string position;
     getline(cin, employee.position);
     employee.position = capitaliseFirstLetter(employee.position);
     while (!isValidName(employee.position)) {
@@ -555,18 +671,14 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.position);
         employee.position = capitaliseFirstLetter(employee.position);
     }
-    employee.position = position;
     cout << "Start Date: ";
-    string startDate;
     getline(cin, employee.startDate);
     while (!isValidDate(employee.startDate)) {
-        cerr << "Invalid start date. Please enter a valid start date (YYYY-MM-DD).\n";
+        cerr << "Invalid start date. Please enter a valid start date (dd/mm/yyyy).\n";
         cout << "Start Date: ";
         getline(cin, employee.startDate);
     }
-    employee.startDate = startDate;
     cout << "Department: ";
-    string department;
     getline(cin, employee.department);
     employee.department = capitaliseFirstLetter(employee.department);
     while (!isValidName(employee.department)) {
@@ -575,7 +687,6 @@ void captureEmployeeData(Employee &employee) {
         getline(cin, employee.department);
         employee.department = capitaliseFirstLetter(employee.department);
     }
-    employee.department = department;
     saveEmployeeData(employee);
 }
 // Function to view the employee data
@@ -583,14 +694,14 @@ void viewEmployeeData(Employee &employee) {
     cout << "Viewing the employee data...\n";
     cout << "Enter clock ID to view employee data: ";
     string clockId;
-    getline(cin, employee.clockId);
-    while (!isValidClockId(employee.clockId)) {
+    getline(cin, clockId);
+    while (!isValidClockId(clockId)) {
         cerr << "Invalid clock ID. Please enter a valid clock ID (6 digits).\n";
         cout << "Enter clock ID to view employee data: ";
-        getline(cin, employee.clockId);
+        getline(cin, clockId);
     }
     employee.clockId = clockId;
-    ifstream inFile("employees.txt");
+    ifstream inFile("employeeDatabase.txt");
     if (!inFile.good()) {
         cerr << "Error opening file\n";
         return;
@@ -599,7 +710,7 @@ void viewEmployeeData(Employee &employee) {
     bool found = false;
     vector<string> record;
     while (getline(inFile, line)) {
-    if (line == "------------------------------------------------") {
+    if (line == "--------------------------------------") {
         // End of record. Check if it contains the target clock ID
         bool hasClockId = false;
         for (const auto &l : record) {
@@ -763,13 +874,13 @@ void accessEmployeesInformation() {
             addEmployeeData(employee);
             break;
         case 3:
-            //updateEmployeeData(employee);
+            updateEmployeeData(employee);
             break;
         case 4:
-            //deleteEmployeeData(employee);
+            deleteEmployeeData(employee);
             break;
         case 5:
-            //viewAllEmployeeData();
+            viewAllEmployeeData(employee);
             break;
         case 0:
             return;
