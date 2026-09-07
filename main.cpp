@@ -5,7 +5,6 @@
 using std::cout;
 using std::cerr;
 using std::cin;
-using std::endl;
 using std::numeric_limits;
 using std::streamsize;
 using std::string;
@@ -20,6 +19,7 @@ class Employee {
         string position;
         string startDate;
         string department;
+    private:
         string payRate;
         string ratePerHour;
         string hoursWorked;
@@ -51,89 +51,108 @@ class Item {
 };
 class StoreSecurity {
     public:
-        string doors;
-        string windows;
-        string lights;
-        string alarms;
-        string dropSafe;
+        string securityDoor = " ";
+        string windows = " ";
+        string lights = " ";
+        string alarms = " ";
+        string dropSafe = " ";
 };
 // Function to check the doors
-void checkDoors() {
-    cout << "Checking the doors...\n";
-    string doors = "Open";
-    if (doors == "Open") {
-        cout << "The doors are open.\n";
-    } else {
-        cout << "The doors are closed.\n";
-        return;
-    }
-}
-// Function to check the windows
-void checkWindows() {
-    cout << "Checking the windows...\n";
-    string windows = "Open";
-    while (windows == "Closed") {
-        cout << "The windows are open. Please check windows...\n";
+void checkDoors(StoreSecurity &storeSecurity) {
+    (void)storeSecurity;
+    cout << "Checking the Security door...\n";
+    string securityDoor = "Closed";
+    cout << "The Security Door is " << securityDoor << ".\n";
+    while (securityDoor == "Open") {
+        cerr << "The Security Door is " << securityDoor << ", Please check it...";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        checkWindows();
+        checkDoors(storeSecurity);
+        break;
+    } 
+    return;
     }
-    cout << "The windows are closed.\n";
+
+// Function to check the windows
+void checkWindows(StoreSecurity &storeSecurity) {
+    cout << "Checking the windows...\n";
+    string windows = "Closed";
+    cout << "The windows are " << windows << "...\n";
+    while (windows == "Open") {
+        cerr << "The windows are " << windows << ", Please check them...";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        checkWindows(storeSecurity);
+        break;
+    }
+    return;
     }
 
 // Function to check the lights
-void checkLights() {
+void checkLights(StoreSecurity &storeSecurity) {
+    (void)storeSecurity;
     cout << "Checking the lights...\n";
     string lights = "On";
-    if (lights == "On") {
-        cout << "The lights are on.\n";
-    } else {
-        cout << "The lights are off.\n";
-        return;
+    cout << "The lights are " << lights << "...\n";
+    while (lights == "Off") {
+        cerr << "The lights are " << lights << ", Please check them...";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        checkLights(storeSecurity);
+        break;
     }
-}
+    return;
+    }
+
 // Function to check the alarms
-void checkAlarms() {
-    cout << "Checking the alarms...\n";
+void checkAlarms(StoreSecurity &storeSecurity) {
+    cout << "Checking the alarm...\n";
     // If the alarms are on, the store should not be open
-    string alarms = "On";
-    while (alarms == "Off") {
-        cerr << "The alarms are on, Please disable the alarms.\n";
+    string alarms = "Off";
+    cout << "The alarm is " << alarms << "...\n";
+    while (alarms == "On") {
+        cerr << "The alarm is " << alarms << ", Please disable it...";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');  
-        checkAlarms();
+        checkAlarms(storeSecurity);
+        break;
     }
-    cout << "The alarms are off.\n";
+    return;
 }
 // Function to check the drop safe
-void checkDropSafe() {
+void checkDropSafe(StoreSecurity &storeSecurity) {
     cout << "Checking the drop safe...\n";
-    string dropSafe = "Open";
-    if (dropSafe == "Open") {
-        cout << "The drop safe is open.\n";
-    } else {
-        cout << "The drop safe is closed.\n";
-        return;
+    string dropSafe = "Closed";
+    cout << "The drop safe is " << dropSafe << "...\n";
+    while (dropSafe == "Open") {
+        cout << "The drop safe is " << dropSafe << ", Please check it...";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        checkDropSafe(storeSecurity);
+        break;
     }
+    return;        
 }
+
 // Function to view the store security
-void viewStoreSecurity() {
+void viewStoreSecurity(StoreSecurity &storeSecurity) {
     cout << "Viewing the store security...\n";
-    StoreSecurity storeSecurity;
-    cout << "Doors: " << storeSecurity.doors << endl;
-    cout << "Windows: " << storeSecurity.windows << endl;
-    cout << "Lights: " << storeSecurity.lights << endl;
-    cout << "Alarms: " << storeSecurity.alarms << endl;
-    cout << "Drop safe: " << storeSecurity.dropSafe << endl;
+    cout << "Doors: " << storeSecurity.securityDoor << "\n";
+    cout << "Windows: " << storeSecurity.windows << "\n";
+    cout << "Lights: " << storeSecurity.lights << "\n";
+    cout << "Alarms: " << storeSecurity.alarms << "\n";
+    cout << "Drop Safe: " << storeSecurity.dropSafe << "\n";
+    
 }
 // Function to open the store
 void openStore() {
+    StoreSecurity storeSecurity;
     cout << "Running security checks...\n";
-    checkDoors();
-    checkWindows();
-    checkLights();
-    checkAlarms();
-    checkDropSafe();
+    checkDoors(storeSecurity);
+    checkWindows(storeSecurity);
+    checkLights(storeSecurity);
+    checkAlarms(storeSecurity);
+    checkDropSafe(storeSecurity);
     cout << "The store is now open.\n";
 }
 
@@ -168,9 +187,11 @@ int main() {
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
         if (option == 1) {
+            StoreSecurity storeSecurity;
             openStore();
         } else if (option == 2) {
-            viewStoreSecurity();
+            StoreSecurity storeSecurity;
+            viewStoreSecurity(storeSecurity);
         } else if (option == 3) {
             // View store status
         } else if (option == 4) {
