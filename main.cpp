@@ -5,19 +5,33 @@
 #include <vector>
 #include <ios>
 #include <cctype>
+#include <chrono>
+#include <thread>
 
-
+using std::string;
 using std::cout;
 using std::cerr;
 using std::cin;
+using std::numeric_limits;
+using std::streamsize;
+using std::getline;
 using std::fstream;
 using std::ifstream;
 using std::ofstream;
-using std::ios;
+using std::stoi;
+using std::to_string;
+using std::stod;
 using std::vector;
-using std::numeric_limits;
-using std::streamsize;
-using std::string;
+using std::ios;
+using namespace std::this_thread;
+using namespace std::chrono;
+
+std::string capitaliseFirstLetter (std::string word) {
+    if (word.length() > 0) {
+        word[0] = toupper(word[0]);
+    }
+    return word;
+}
 
 class Employee {
     public:
@@ -74,6 +88,19 @@ class Item {
         string price;
         string quantity;
         string total;
+};
+class DataBase {
+    public:
+        string itemName;
+        string itemCode;
+        string itemDepartment;
+        string itemDescription;
+        string itemCategory;
+        string itemColour;
+        string itemSize;
+        string itemPrice;
+        string itemQuantity;
+        string itemTotal;
 };
 class StoreSecurity {
     public:
@@ -181,7 +208,17 @@ void checkLights(StoreSecurity &storeSecurity);
 void checkAlarms(StoreSecurity &storeSecurity);
 void checkDropSafe(StoreSecurity &storeSecurity);
 void accessEmployeeInformation(Employee &employee);
-//void saveSalesData();
+void saveSalesData(Department &department, Item &item);
+void captureSalesData();
+void checkManagementDepartment(Department &department);
+void checkSalesDepartment(Department &department);
+void checkStockDepartment(Department &department);
+void checkBakeryDepartment(Department &department);
+void checkGroceryDepartment(Department &department);
+void checkCleaningDepartment(Department &department);
+void checkBeveragesDepartment(Department &department);
+void checkFruitsAndVegetablesDepartment(Department &department);
+void checkMeatAndSeafoodDepartment(Department &department);
 //void viewSalesData();
 //void updateSalesData();
 //void deleteSalesData();
@@ -193,13 +230,9 @@ void viewEmployeeData(Employee &employee);
 void updateEmployeeData(Employee &employee);
 void deleteEmployeeData(Employee &employee);
 void viewAllEmployeeData(Employee &employee);
-//void stockUpStore();
-string capitaliseFirstLetter (string word) {
-    if (!word.empty()) {
-        word[0] = static_cast<char>(toupper(static_cast<unsigned char>(word[0])));
-    }
-    return word;
-}
+void viewStoreStatus(Department &department, Employee &employee);
+void stockUpStore(Item &item);
+
 // Function to create employee database file if it does not exist
 void createEmployeeDataBaseFile() {
     ifstream existingFile("employeeDatabase.txt");
@@ -221,9 +254,313 @@ void createStockDataBaseFile() {
         ofstream stockDatabaseFile("stockDatabase.txt");
     }
 }
+// Function to save sales data to sales database file
+void saveSalesData(Department &department, Item &item) {
+    cout << "Saving sales data...\n";
+    cout << "-----------------------------------\n";
+    ofstream outFile("salesDatabase.txt", ios::app);
+    if (!outFile) {
+        cerr << "Error opening file\n";
+        return;
+    }
+    outFile << "Department: " << department.departmentName << "\n";
+    outFile << "Item: " << item.name << "\n";
+    outFile << "Description: " << item.description << "\n";
+    outFile << "Category: " << item.category << "\n";
+    outFile << "Colour: " << item.colour << "\n";
+    outFile << "Size: " << item.size << "\n";
+    outFile << "Price: " << item.price << "\n";
+    outFile << "Quantity: " << item.quantity << "\n";
+    outFile << "Total: " << item.total << "\n";
+    outFile << "-----------------------------------\n";
+    outFile.close();
+}
+// Function to check management department
+void checkManagementDepartment(Department &department) {
+    cout << "Checking management department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Management";
+    department.numberOfEmployees = 18;
+    department.employeeCount = 18;
+    department.departmentManager = "Andile Busakwe";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check sales department
+void checkSalesDepartment(Department &department) {
+    cout << "Checking sales department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Sales";
+    department.numberOfEmployees = 12;
+    department.employeeCount = 10;
+    department.departmentManager = "Mbulelo Mahlangu";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check stock department
+void checkStockDepartment(Department &department) {
+    cout << "Checking stock department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Stock";
+    department.numberOfEmployees = 8;
+    department.employeeCount = 8;
+    department.departmentManager = "Andile Danse";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check human resources department
+void checkHumanResourcesDepartment(Department &department) {
+    cout << "Checking human resources department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Human Resources";
+    department.numberOfEmployees = 6;
+    department.employeeCount = 6;
+    department.departmentManager = "Sindiswa Dlala";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check bakery department
+void checkBakeryDepartment(Department &department) {
+    cout << "Checking bakery department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Bakery";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full" + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check security department
+void checkSecurityDepartment(Department &department) {
+    cout << "Checking security department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Security";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check grocery department
+void checkGroceryDepartment(Department &department) {
+    cout << "Checking grocery department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Grocery";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check cleaning department
+void checkCleaningDepartment(Department &department) {
+    cout << "Checking cleaning department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Cleaning";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check beverages department
+void checkBeveragesDepartment(Department &department) {
+    cout << "Checking beverages department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Beverages";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check fruits and vegetables department
+void checkFruitsAndVegetablesDepartment(Department &department) {
+    cout << "Checking fruits and vegetables department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Fruits and Vegetables";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to check meat and seafood department
+void checkMeatAndSeafoodDepartment(Department &department) {
+    cout << "Checking meat and seafood department...\n";
+    cout << "-----------------------------------\n";
+    department.departmentName = "Meat and Seafood";
+    department.numberOfEmployees = 4;
+    department.employeeCount = 4;
+    department.departmentManager = "Andile Joseph";
+    cout << "Department: " << department.departmentName << "\n";
+    cout << "Number of employees: " << department.numberOfEmployees << "\n";
+    cout << "Employee count: " << department.employeeCount << "\n";
+    cout << "Department manager: " << department.departmentManager << "\n";
+    if (department.numberOfEmployees == department.employeeCount) {
+        department.departmentStatus = "The team is full in " + department.departmentName + "\n";
+    } else {
+        department.departmentStatus = "There is a shortage of employees in " + department.departmentName;
+    }
+    cout << "Department status: " << department.departmentStatus << "\n";
+    cout << "-----------------------------------\n";
+}
+// Function to stock up the store
+void stockUpStore(Item &item) {
+    // The items entered by the user will be added to the stock database
+    cout << "Stocking up the store...\n";
+    cout << "-----------------------------------\n";
+    ofstream outFile("stockDatabase.txt", ios::app);
+    if (!outFile) {
+        cerr << "Error opening file\n";
+        return;
+    }
+    cout << "Enter Item Name: ";
+    getline(cin, item.name);
+    item.name = capitaliseFirstLetter(item.name);
+    while (item.name.empty()) {
+        cout << "Item name cannot be empty. Please enter a valid item name: ";
+        getline(cin, item.name);
+        item.name = capitaliseFirstLetter(item.name);
+    }
+    ifstream stockFile("stockDatabase.txt");
+    if (!stockFile) {
+        cerr << "Unable to open stock database file.\n";
+    }
+    stockFile.close();
+    
+
+}
+// Function to capture sales data
+void captureSalesData() {
+    Item item;
+    cout << "Capturing sales data...\n";
+    cout << "-----------------------------------\n";
+    cout << "Enter Item Name: ";
+    getline(cin, item.name);
+    item.name = capitaliseFirstLetter(item.name);
+    while (item.name.empty()) {
+        cout << "Item name cannot be empty. Please enter a valid item name: ";
+        getline(cin, item.name);
+        item.name = capitaliseFirstLetter(item.name);
+    }
+    ifstream existingFile("salesDatabase.txt");
+    // The program will deduct the quantity of the sold item from the stock database
+    if (existingFile.is_open()) {
+        string line;
+        while (getline(existingFile, line)) {
+            if (line.find("Item: " + item.name) != string::npos) {
+                cout << "-----------------------------------\n";
+                cout << "Item: " << item.name << "\n";
+                cout << "Description: " << item.description << "\n";
+                cout << "Category: " << item.category << "\n";
+                cout << "Colour: " << item.colour << "\n";
+                cout << "Size: " << item.size << "\n";
+                cout << "Price: R" << item.price << "\n";
+                cout << "Quantity: " << item.quantity << "\n";
+                cout << "Total: R" << item.total << "\n";
+                cout << "-----------------------------------\n";
+                item.quantity = to_string(stoi(item.quantity) - 1);
+                item.total = to_string(stod(item.total) - stod(item.price));
+                break;
+            }
+        }
+    }
+}
 // Function to save employee data
 void saveEmployeeData(Employee &employee) {
     cout << "Saving employee data...\n";
+    cout << "-----------------------------------\n";
     ofstream outFile("employeeDatabase.txt", ios::app);
     if (!outFile) {
         cerr << "Error opening file\n";
@@ -315,6 +652,7 @@ void accessEmployeeInformation(Employee &employee) {
 // Function to view all employee data
 void viewAllEmployeeData(Employee &) {
     cout << "Viewing all employee data...\n";
+    cout << "-----------------------------------\n";
     ifstream inFile("employeeDatabase.txt");
     if (!inFile) {
         cerr << "Error opening file\n";
@@ -329,6 +667,7 @@ void viewAllEmployeeData(Employee &) {
 // Function to remove employee data
 void deleteEmployeeData(Employee &employee) {
     cout << "Removing employee data...\n";
+    cout << "-----------------------------------\n";
     cout << "Enter clock ID to remove employee data: ";
     string clockId;
     getline(cin, clockId);
@@ -386,6 +725,7 @@ void deleteEmployeeData(Employee &employee) {
 // Function to update employee data
 void updateEmployeeData(Employee &employee) {
     cout << "Updating employee data...\n";
+    cout << "-----------------------------------\n";
     cout << "Enter clock ID to update employee data: ";
     string clockId;
     getline(cin, clockId);
@@ -468,7 +808,6 @@ void updateEmployeeData(Employee &employee) {
 }
 // Function to add employee data
 void addEmployeeData(Employee &employee) {
-    cout << "Adding employee data...\n";
     captureEmployeeData(employee);
 }
 // Function to capture employee data
@@ -616,10 +955,12 @@ void captureEmployeeData(Employee &employee) {
     }
     cout << "Street Name: ";
     getline(cin, employee.streetName);
+    employee.streetName = capitaliseFirstLetter(employee.streetName);
     while (employee.streetName.empty()) {
         cerr << "Invalid street name. Please enter a valid street name.\n";
         cout << "Street Name: ";
         getline(cin, employee.streetName);
+        employee.streetName = capitaliseFirstLetter(employee.streetName);
     }
     cout << "Town: ";
     getline(cin, employee.town);
@@ -691,7 +1032,7 @@ void captureEmployeeData(Employee &employee) {
 }
 // Function to view the employee data
 void viewEmployeeData(Employee &employee) {
-    cout << "Viewing the employee data...\n";
+    cout << "Viewing an employee's data...\n";
     cout << "Enter clock ID to view employee data: ";
     string clockId;
     getline(cin, clockId);
@@ -738,35 +1079,22 @@ void viewEmployeeData(Employee &employee) {
         cout << "Employee data not found.\n";
     }
     inFile.close();
-    } 
+}
 // Function to check the doors
 void checkDoors(StoreSecurity &storeSecurity) {
     (void)storeSecurity;
     cout << "Checking the Security door...\n";
     string securityDoor = "Closed";
     cout << "The Security Door is " << securityDoor << ".\n";
-    while (securityDoor == "Open") {
-        cerr << "The Security Door is " << securityDoor << ", Please check it...";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        checkDoors(storeSecurity);
-        break;
-    } 
     return;
     }
 
 // Function to check the windows
 void checkWindows(StoreSecurity &storeSecurity) {
+    (void)storeSecurity;
     cout << "Checking the windows...\n";
     string windows = "Closed";
     cout << "The windows are " << windows << "...\n";
-    while (windows == "Open") {
-        cerr << "The windows are " << windows << ", Please check them...";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        checkWindows(storeSecurity);
-        break;
-    }
     return;
     }
 
@@ -776,55 +1104,35 @@ void checkLights(StoreSecurity &storeSecurity) {
     cout << "Checking the lights...\n";
     string lights = "On";
     cout << "The lights are " << lights << "...\n";
-    while (lights == "Off") {
-        cerr << "The lights are " << lights << ", Please check them...";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        checkLights(storeSecurity);
-        break;
-    }
     return;
     }
 
 // Function to check the alarms
 void checkAlarms(StoreSecurity &storeSecurity) {
+    (void)storeSecurity;
     cout << "Checking the alarm...\n";
-    // If the alarms are on, the store should not be open
     string alarms = "Off";
     cout << "The alarm is " << alarms << "...\n";
-    while (alarms == "On") {
-        cerr << "The alarm is " << alarms << ", Please disable it...";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');  
-        checkAlarms(storeSecurity);
-        break;
-    }
     return;
 }
 // Function to check the drop safe
 void checkDropSafe(StoreSecurity &storeSecurity) {
+    (void)storeSecurity;
     cout << "Checking the drop safe...\n";
     string dropSafe = "Closed";
     cout << "The drop safe is " << dropSafe << "...\n";
-    while (dropSafe == "Open") {
-        cout << "The drop safe is " << dropSafe << ", Please check it...";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        checkDropSafe(storeSecurity);
-        break;
-    }
     return;        
 }
 
 // Function to view the store security
 void viewStoreSecurity(StoreSecurity &storeSecurity) {
-    cout << "Viewing the store security...\n";
-    cout << "Doors: " << storeSecurity.securityDoor << "\n";
-    cout << "Windows: " << storeSecurity.windows << "\n";
-    cout << "Lights: " << storeSecurity.lights << "\n";
-    cout << "Alarms: " << storeSecurity.alarms << "\n";
-    cout << "Drop Safe: " << storeSecurity.dropSafe << "\n";
-    
+    cout << "Viewing the store security status...\n";
+    checkDoors(storeSecurity);
+    checkWindows(storeSecurity);
+    checkLights(storeSecurity);
+    checkAlarms(storeSecurity);
+    checkDropSafe(storeSecurity);
+    cout << "This is the current store security status.\n";
 }
 // Function to open the store
 void openStore() {
@@ -836,6 +1144,18 @@ void openStore() {
     checkAlarms(storeSecurity);
     checkDropSafe(storeSecurity);
     cout << "The store is now open.\n";
+}
+// Function to view the store status
+void viewStoreStatus(Department &department) {
+    cout << "Viewing the store status...\n";
+    checkBakeryDepartment(department);
+    checkGroceryDepartment(department);
+    checkSalesDepartment(department);
+    checkSecurityDepartment(department);
+    checkBeveragesDepartment(department);
+    checkHumanResourcesDepartment(department);
+    checkMeatAndSeafoodDepartment(department);
+    cout << "The store is currently open.\n";
 }
 // Function to access employees information
 void accessEmployeesInformation() {
@@ -883,35 +1203,39 @@ void accessEmployeesInformation() {
             viewAllEmployeeData(employee);
             break;
         case 0:
-            return;
+            break;
+        default:
+            break;
     }
 }
 
 // Function to manage the store
 void manageTheStore() {
-    cout << "Welcome to the Manager's Desk\n";
+    cout << "Store Management\n";
     while (true) {
         cout << "1. Open The Store\n";
         cout << "2. View Store Security\n";
         cout << "3. View Store Status\n";
-        cout << "4. Access Departments Information\n";
-        cout << "5. Access Employees Information\n";
-        cout << "6. Close The Store\n";
+        cout << "4. Stock up the store\n";
+        cout << "5. Access Departments Information\n";
+        cout << "6. Access Employees Information\n";
+        cout << "7. Close The Store\n";
         cout << "0. Exit\n";
         cout << "Please select an option: ";
         int option;
         cin >> option;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        while (cin.fail() || option < 0 || option > 6) {
+        while (cin.fail() || option < 0 || option > 7) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cerr << "Invalid input. Please try again.\n";
             cout << "1. Open The Store\n";
             cout << "2. View Store Security\n";
             cout << "3. View Store Status\n";
-            cout << "4. Access Departments Information\n";
-            cout << "5. Access Employees Information\n";
-            cout << "6. Close The Store\n";
+            cout << "4. Stock up the store\n";
+            cout << "5. Access Departments Information\n";
+            cout << "6. Access Employees Information\n";
+            cout << "7. Close The Store\n";
             cout << "0. Exit\n";
             cout << "Please select an option: ";
             cin >> option;
@@ -920,13 +1244,23 @@ void manageTheStore() {
         if (option == 1) {
             StoreSecurity storeSecurity;
             openStore();
+            sleep_for(seconds(5));
+            return;
         } else if (option == 2) {
             StoreSecurity storeSecurity;
             viewStoreSecurity(storeSecurity);
+            sleep_for(seconds(5));
+            return;
         } else if (option == 3) {
-            // View store status
+            Department department;
+            Employee employee;
+            viewStoreStatus(department);
+            sleep_for(seconds(5));
+            return;
         } else if (option == 4) {
-            //accessDepartmentsInformation(employee);
+            Item item;
+            stockUpStore(item);
+            return;
         } else if (option == 5) {
             Employee employee;
             accessEmployeeInformation(employee);
@@ -944,8 +1278,13 @@ int main() {
     createEmployeeDataBaseFile();
     createSalesDataBaseFile();
     createStockDataBaseFile();
+    cout << "Welcome to the Manager's Desk\n";
     while (true) {
-        cout << "Welcome to the Manager's Desk\n";
+        cout << "\n";
+        cout << "--------------------------\n";
+        cout << "What would you like to do?\n";
+        cout << "--------------------------\n";
+        cout << "\n";
         cout << "1. Manage The Store\n";
         cout << "2. Manage Employees\n";
         cout << "3. Manage Security\n";
@@ -974,7 +1313,8 @@ int main() {
             // Manage security
         } else if (option == 0) {
             cout << "Closing the manager's desk... Goodbye!\n";
-            break;
+            sleep_for(seconds(2));
+            exit(0);
         }
     }
     return 0;

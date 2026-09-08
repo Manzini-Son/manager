@@ -10,13 +10,35 @@ Marital Status: Single
 Phone Number: 0837569111
 Email Address: andiledanse@outlook.com
 House Number: 16
-Street Name: khetshane crescent
+Street Name: Khetshane crescent
 Town: Kwanobuhle
 City: Uitenhage
 Postal Code: 6242
 Province: Eastern cape
 Clock ID: 123456
-Position: Operator
+Position: Head of Research
 Start Date: 02/11/2025
-Department: Bakery
+Department: Management
+--------------------------------------
+Title: Mr
+First Name: Andile
+Middle Name: Manzini
+Last Name: Busakwe
+Gender: Male
+Date of Birth: 02/11/1984
+Age: 42
+ID Number: 8411025333080
+Marital Status: Single
+Phone Number: 0729857612
+Email Address: andiledanse94@gmail.com
+House Number: 78
+Street Name: Jongilanga street
+Town: Kwanobuhle
+City: Uitenhage
+Postal Code: 6242
+Province: Eastern cape
+Clock ID: 654321
+Position: Supervisor
+Start Date: 25/12/2005
+Department: Butchery
 --------------------------------------
