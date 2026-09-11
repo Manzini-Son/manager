@@ -95,7 +95,7 @@ class StoreSecurity {
         std::string alarms = " ";
         std::string dropSafe = " ";
 };
-// Headers
+// Helpers
 bool isValidTitle (const std::string &title) {
     if (title == "Mr" || title == "Mrs" || title == "Miss" || title == "Ms" || title == "Dr" || title == "Prof") {
         return true;
@@ -262,6 +262,8 @@ void saveSalesData(Department &department, Item &item) {
 }
 // Function to check management department
 void checkManagementDepartment(Department &department) {
+    std::cout << "\n";
+    std::cout << "-----------------------------------\n";
     std::cout << "Checking management department...\n";
     std::cout << "-----------------------------------\n";
     department.departmentName = "Management";
@@ -282,6 +284,8 @@ void checkManagementDepartment(Department &department) {
 }
 // Function to check sales department
 void checkSalesDepartment(Department &department) {
+    std::cout << "\n";
+    std::cout << "-----------------------------------\n";
     std::cout << "Checking sales department...\n";
     std::cout << "-----------------------------------\n";
     department.departmentName = "Sales";
