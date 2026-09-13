@@ -1,0 +1,37 @@
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build Artifacts
+**/build*/
+cmake-build-debug/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# Output and Logs
+**/output/
+*.log
+*.tmp
+
+# Environment and Secrets
+.env
+.env.*
+
+# Project-specific Ignores
+RadioPlayer/ffmpeg-git-*-static/
+darkseek/tor_data/
+darkseek/tor_data_test/
+# Data files that look like generated/test data
+**/employeeDatabase.txt
+**/salesDatabase.txt
+**/stockDatabase.txt
+**/temp.txt
+
+# Large Model and Data Files
+*.xml
+*.yml

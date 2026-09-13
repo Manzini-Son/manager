@@ -204,9 +204,11 @@ void checkLights(StoreSecurity &storeSecurity);
 void checkAlarms(StoreSecurity &storeSecurity);
 void checkDropSafe(StoreSecurity &storeSecurity);
 void accessEmployeeInformation(Employee &employee);
+void manageSecurity();
 void saveSalesData(Department &department, Item &item);
 void captureSalesData();
 void checkManagementDepartment(Department &department);
+const std::string RECORD_SEPARATOR = "--------------------------------------";
 void checkSalesDepartment(Department &department);
 void checkStockDepartment(Department &department);
 void checkBakeryDepartment(Department &department);
@@ -223,10 +225,10 @@ void saveEmployeeData(Employee &employee);
 void captureEmployeeData(Employee &employee);
 void addEmployeeData(Employee &employee);
 void viewEmployeeData(Employee &employee);
-void updateEmployeeData(Employee &employee);
+void editDetails(Employee &employee);
 void deleteEmployeeData(Employee &employee);
 void viewAllEmployeeData(Employee &employee);
-void viewStoreStatus(Department &department, Employee &employee);
+void viewStoreStatus(Department &department);
 void stockUpStore(Item &item);
 
 // Function to create employee database file if it does not exist
@@ -277,6 +279,7 @@ void checkManagementDepartment(Department &department) {
   std::cout << "-----------------------------------\n";
   std::cout << "Checking management department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Management";
   department.numberOfEmployees = 18;
   department.employeeCount = 18;
@@ -301,6 +304,7 @@ void checkSalesDepartment(Department &department) {
   std::cout << "-----------------------------------\n";
   std::cout << "Checking sales department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Sales";
   department.numberOfEmployees = 12;
   department.employeeCount = 10;
@@ -321,8 +325,11 @@ void checkSalesDepartment(Department &department) {
 }
 // Function to check stock department
 void checkStockDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking stock department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Stock";
   department.numberOfEmployees = 8;
   department.employeeCount = 8;
@@ -343,8 +350,11 @@ void checkStockDepartment(Department &department) {
 }
 // Function to check human resources department
 void checkHumanResourcesDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking human resources department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Human Resources";
   department.numberOfEmployees = 6;
   department.employeeCount = 6;
@@ -365,8 +375,11 @@ void checkHumanResourcesDepartment(Department &department) {
 }
 // Function to check bakery department
 void checkBakeryDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking bakery department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Bakery";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -387,8 +400,11 @@ void checkBakeryDepartment(Department &department) {
 }
 // Function to check security department
 void checkSecurityDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking security department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Security";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -409,8 +425,11 @@ void checkSecurityDepartment(Department &department) {
 }
 // Function to check grocery department
 void checkGroceryDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking grocery department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Grocery";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -431,8 +450,11 @@ void checkGroceryDepartment(Department &department) {
 }
 // Function to check cleaning department
 void checkCleaningDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking cleaning department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Cleaning";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -453,8 +475,11 @@ void checkCleaningDepartment(Department &department) {
 }
 // Function to check beverages department
 void checkBeveragesDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking beverages department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Beverages";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -475,8 +500,11 @@ void checkBeveragesDepartment(Department &department) {
 }
 // Function to check fruits and vegetables department
 void checkFruitsAndVegetablesDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking fruits and vegetables department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Fruits and Vegetables";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -497,8 +525,11 @@ void checkFruitsAndVegetablesDepartment(Department &department) {
 }
 // Function to check meat and seafood department
 void checkMeatAndSeafoodDepartment(Department &department) {
+  std::cout << "\n";
+  std::cout << "-----------------------------------\n";
   std::cout << "Checking meat and seafood department...\n";
   std::cout << "-----------------------------------\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   department.departmentName = "Meat and Seafood";
   department.numberOfEmployees = 4;
   department.employeeCount = 4;
@@ -614,8 +645,9 @@ void saveEmployeeData(Employee &employee) {
   outFile << "Position: " << employee.position << "\n";
   outFile << "Start Date: " << employee.startDate << "\n";
   outFile << "Department: " << employee.department << "\n";
-  outFile << "--------------------------------------\n";
+  outFile << RECORD_SEPARATOR << "\n";
   outFile.close();
+  std::this_thread::sleep_for(std::chrono::seconds(2));
   std::cout << "Employee data saved successfully.\n";
 }
 // Function to access employee information
@@ -646,33 +678,23 @@ void accessEmployeeInformation(Employee &employee) {
     std::cin >> option;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
-  switch (option) {
-  case 1:
+  if (option == 1) {
     viewEmployeeData(employee);
-    break;
-  case 2:
+  } else if (option == 2) {
     addEmployeeData(employee);
-    break;
-  case 3:
-    updateEmployeeData(employee);
-    break;
-  case 4:
+  } else if (option == 3) {
+    editDetails(employee);
+  } else if (option == 4) {
     deleteEmployeeData(employee);
-    break;
-
-  case 5:
+  } else if (option == 5) {
     viewAllEmployeeData(employee);
-    break;
-  case 0:
+  } else if (option == 0) {
     std::cout << "Exiting...\n";
-    break;
-  default:
-    std::cout << "Invalid option. Please try again.\n";
-    break;
   }
 }
 // Function to view all employee data
-void viewAllEmployeeData(Employee &) {
+void viewAllEmployeeData(Employee &employee) {
+  (void)employee;
   std::cout << "Viewing all employee data...\n";
   std::cout << "-----------------------------------\n";
   std::ifstream inFile("employeeDatabase.txt");
@@ -745,90 +767,729 @@ void deleteEmployeeData(Employee &employee) {
     std::cout << "Employee data not found.\n";
   }
 }
-// Function to update employee data
-void updateEmployeeData(Employee &employee) {
-  std::cout << "Updating employee data...\n";
-  std::cout << "-----------------------------------\n";
-  std::cout << "Enter clock ID to update employee data: ";
+// Parse a passenger record (list of lines) into a Passenger object
+Employee parseEmployee(const std::vector<std::string> &record) {
+  Employee e;
+  for (const auto &line : record) {
+    size_t colonPos = line.find(": ");
+    if (colonPos == std::string::npos) {
+      continue;
+    }
+    std::string key = line.substr(0, colonPos);
+    std::string value = line.substr(colonPos + 2);
+
+    if (key == "Clock ID")
+      e.clockId = value;
+    else if (key == "Title")
+      e.title = value;
+    else if (key == "First Name")
+      e.firstName = value;
+    else if (key == "Middle Name")
+      e.middleName = value;
+    else if (key == "Last Name")
+      e.lastName = value;
+    else if (key == "Gender")
+      e.gender = value;
+    else if (key == "Age") {
+      try {
+        e.age = std::stoi(value);
+      } catch (...) {
+        e.age = 0;
+      }
+    } else if (key == "Date of Birth")
+      e.dateOfBirth = value;
+    else if (key == "ID Number")
+      e.idNumber = value;
+    else if (key == "Marital Status")
+      e.maritalStatus = value;
+    else if (key == "Spouse First Name")
+      e.spouseFirstName = value;
+    else if (key == "Spouse Last Name")
+      e.spouseLastName = value;
+    else if (key == "Spouse Phone Number")
+      e.spousePhoneNumber = value;
+    else if (key == "Phone Number")
+      e.phoneNumber = value;
+    else if (key == "Email Address")
+      e.emailAddress = value;
+    else if (key == "House Number")
+      e.houseNumber = value;
+    else if (key == "Street Name")
+      e.streetName = value;
+    else if (key == "Town")
+      e.town = value;
+    else if (key == "City")
+      e.city = value;
+    else if (key == "Postal Code")
+      e.postalCode = value;
+    else if (key == "Province")
+      e.province = value;
+  }
+  return e;
+}
+
+// Format an Employee object into a list of lines representing a record
+std::vector<std::string> formatEmployeeRecord(const Employee &employee) {
+  std::vector<std::string> lines;
+  lines.push_back("Clock ID: " + employee.clockId);
+  lines.push_back("Title: " + employee.title);
+  lines.push_back("First Name: " + employee.firstName);
+  lines.push_back("Middle Name: " + employee.middleName);
+  lines.push_back("Last Name: " + employee.lastName);
+  lines.push_back("Gender: " + employee.gender);
+  lines.push_back("Age: " + std::to_string(employee.age) + " years");
+  lines.push_back("Date of Birth: " + employee.dateOfBirth);
+  lines.push_back("ID Number: " + employee.idNumber);
+  lines.push_back("Marital Status: " + employee.maritalStatus);
+  if (employee.maritalStatus == "Married") {
+    lines.push_back("Spouse First Name: " + employee.spouseFirstName);
+    lines.push_back("Spouse Last Name: " + employee.spouseLastName);
+    lines.push_back("Spouse Phone Number: " + employee.spousePhoneNumber);
+  }
+  lines.push_back("Phone Number: " + employee.phoneNumber);
+  lines.push_back("Email Address: " + employee.emailAddress);
+  lines.push_back("House Number: " + employee.houseNumber);
+  lines.push_back("Street Name: " + employee.streetName);
+  lines.push_back("Town: " + employee.town);
+  lines.push_back("City: " + employee.city);
+  lines.push_back("Postal Code: " + employee.postalCode);
+  lines.push_back("Province: " + employee.province);
+  lines.push_back(RECORD_SEPARATOR);
+  return lines;
+}
+
+std::vector<std::vector<std::string>>
+readAllRecords(const std::string &filename) {
+  std::vector<std::vector<std::string>> records;
+  std::ifstream inFile(filename);
+  if (!inFile.good()) {
+    return records;
+  }
+  std::vector<std::string> currentRecord;
+  std::string line;
+  while (std::getline(inFile, line)) {
+    if (line == RECORD_SEPARATOR) {
+      if (!currentRecord.empty()) {
+        records.push_back(currentRecord);
+        currentRecord.clear();
+      }
+      continue;
+    }
+    currentRecord.emplace_back(line);
+  }
+  if (!currentRecord.empty()) {
+    records.push_back(currentRecord);
+  }
+  inFile.close();
+  return records;
+}
+
+bool writeAllRecords(const std::string &filename,
+                     const std::vector<std::vector<std::string>> &records) {
+  std::ofstream outFile(filename);
+  if (!outFile.good()) {
+    return false;
+  }
+  for (const auto &rec : records) {
+    for (const auto &l : rec) {
+      outFile << l << "\n";
+    }
+    outFile << RECORD_SEPARATOR << "\n";
+  }
+  outFile.close();
+  return true;
+}
+
+int findEmployeeRecordIndex(
+    const std::vector<std::vector<std::string>> &records,
+    const std::string &clockId) {
+  if (clockId.empty())
+    return -1;
+  for (size_t i = 0; i < records.size(); ++i) {
+    for (const auto &l : records[i]) {
+      if (l == "Clock ID: " + clockId ||
+          l.find("Clock ID: " + clockId) != std::string::npos) {
+        return static_cast<int>(i);
+      }
+    }
+  }
+  return -1;
+}
+
+// Enum for employee fields
+enum EmployeeField {
+  ClockId,
+  Title,
+  FirstName,
+  MiddleName,
+  LastName,
+  Gender,
+  Age,
+  DateOfBirth,
+  IdNumber,
+  MaritalStatus,
+  SpouseFirstName,
+  SpouseLastName,
+  SpousePhoneNumber,
+  PhoneNumber,
+  EmailAddress,
+  HouseNumber,
+  StreetName,
+  Town,
+  City,
+  PostalCode,
+  Province
+};
+
+struct FieldOption {
+  EmployeeField field;
+  std::string label;
+  std::string currentValue;
+};
+
+std::vector<FieldOption> getFieldOptions(const Employee &employee) {
+  std::vector<FieldOption> options;
+  options.push_back({EmployeeField::ClockId, "Clock ID", employee.clockId});
+  options.push_back({EmployeeField::Title, "Title", employee.title});
+  options.push_back(
+      {EmployeeField::FirstName, "First Name", employee.firstName});
+  options.push_back(
+      {EmployeeField::MiddleName, "Middle Name", employee.middleName});
+  options.push_back({EmployeeField::LastName, "Last Name", employee.lastName});
+  options.push_back({EmployeeField::Gender, "Gender", employee.gender});
+  options.push_back(
+      {EmployeeField::Age, "Age", std::to_string(employee.age) + " years"});
+  options.push_back(
+      {EmployeeField::DateOfBirth, "Date of Birth", employee.dateOfBirth});
+  options.push_back({EmployeeField::IdNumber, "ID Number", employee.idNumber});
+  options.push_back(
+      {EmployeeField::MaritalStatus, "Marital Status", employee.maritalStatus});
+  if (employee.maritalStatus == "Married") {
+    options.push_back({EmployeeField::SpouseFirstName, "Spouse First Name",
+                       employee.spouseFirstName});
+    options.push_back({EmployeeField::SpouseLastName, "Spouse Last Name",
+                       employee.spouseLastName});
+    options.push_back({EmployeeField::SpousePhoneNumber, "Spouse Phone Number",
+                       employee.spousePhoneNumber});
+  }
+  options.push_back(
+      {EmployeeField::PhoneNumber, "Phone Number", employee.phoneNumber});
+  options.push_back(
+      {EmployeeField::EmailAddress, "Email Address", employee.emailAddress});
+  options.push_back(
+      {EmployeeField::HouseNumber, "House Number", employee.houseNumber});
+  options.push_back(
+      {EmployeeField::StreetName, "Street Name", employee.streetName});
+  options.push_back({EmployeeField::Town, "Town", employee.town});
+  options.push_back({EmployeeField::City, "City", employee.city});
+  options.push_back(
+      {EmployeeField::PostalCode, "Postal Code", employee.postalCode});
+  options.push_back({EmployeeField::Province, "Province", employee.province});
+  return options;
+}
+
+void editSingleField(Employee &employee, EmployeeField field, bool &modified) {
+  switch (field) {
+  case EmployeeField::Title: {
+    std::cout << "Enter new Title (Mr/Ms/Dr etc.): ";
+    std::string title;
+    std::getline(std::cin, title);
+    title = capitaliseFirstLetter(title);
+    while (!isValidTitle(title)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid title. Please enter valid title(Mr/Ms/Dr etc.)\n";
+      std::cout << "Title: ";
+      std::getline(std::cin, title);
+      title = capitaliseFirstLetter(title);
+    }
+    employee.title = title;
+    modified = true;
+    std::cout << "Title updated successfully.\n";
+    break;
+  }
+  case EmployeeField::FirstName: {
+    std::cout << "Enter new First name: ";
+    std::string firstName;
+    std::getline(std::cin, firstName);
+    firstName = capitaliseFirstLetter(firstName);
+    while (!isValidName(firstName) || firstName.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid first name. Please enter valid first name(Letters "
+                   "only)\n";
+      std::cout << "First name: ";
+      std::getline(std::cin, firstName);
+      firstName = capitaliseFirstLetter(firstName);
+    }
+    employee.firstName = firstName;
+    modified = true;
+    std::cout << "First name updated successfully.\n";
+    break;
+  }
+  case EmployeeField::MiddleName: {
+    std::cout
+        << "Enter new Middle name (optional, press enter to leave blank): ";
+    std::string middleName;
+    std::getline(std::cin, middleName);
+    middleName = capitaliseFirstLetter(middleName);
+    while (!isValidName(middleName)) {
+      if (std::cin.eof() || middleName.empty()) {
+        break;
+      }
+      std::cerr << "Invalid middle name. Please enter valid middle "
+                   "name(Letters only)\n";
+      std::cout << "Middle name (optional): ";
+      std::getline(std::cin, middleName);
+      middleName = capitaliseFirstLetter(middleName);
+    }
+    employee.middleName = middleName;
+    modified = true;
+    std::cout << "Middle name updated successfully.\n";
+    break;
+  }
+  case EmployeeField::LastName: {
+    std::cout << "Enter new Last name: ";
+    std::string lastName;
+    std::getline(std::cin, lastName);
+    lastName = capitaliseFirstLetter(lastName);
+    while (!isValidName(lastName) || lastName.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr
+          << "Invalid last name. Please enter valid last name(Letters only)\n";
+      std::cout << "Last name: ";
+      std::getline(std::cin, lastName);
+      lastName = capitaliseFirstLetter(lastName);
+    }
+    employee.lastName = lastName;
+    modified = true;
+    std::cout << "Last name updated successfully.\n";
+    break;
+  }
+  case EmployeeField::Gender: {
+    std::cout << "Enter new Gender (Male/Female/Other): ";
+    std::string gender;
+    std::getline(std::cin, gender);
+    gender = capitaliseFirstLetter(gender);
+    while (!isValidGender(gender)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid gender. Please enter Male, Female, or Other\n";
+      std::cout << "Gender: ";
+      std::getline(std::cin, gender);
+      gender = capitaliseFirstLetter(gender);
+    }
+    employee.gender = gender;
+    modified = true;
+    std::cout << "Gender updated successfully.\n";
+    break;
+  }
+  case EmployeeField::Age: {
+    std::cout << "Enter new Age: ";
+    std::string ageStr;
+    std::getline(std::cin, ageStr);
+    while (ageStr.empty() || !all_of(ageStr.begin(), ageStr.end(), ::isdigit) ||
+           std::stoi(ageStr) < 18 || std::stoi(ageStr) > 65) {
+      if (std::cin.eof())
+        return;
+      std::cerr
+          << "Invalid age. Please enter a valid age(Digits only, 18-65)\n";
+      std::cout << "Age: ";
+      std::getline(std::cin, ageStr);
+    }
+    employee.age = std::stoi(ageStr);
+    modified = true;
+    std::cout << "Age updated successfully.\n";
+    break;
+  }
+  case EmployeeField::DateOfBirth: {
+    std::cout << "Enter new Date of Birth (dd/mm/yyyy): ";
+    std::string dateOfBirth;
+    std::getline(std::cin, dateOfBirth);
+    while (!isValidDate(dateOfBirth)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid date of birth. Please enter in DD/MM/YYYY format\n";
+      std::cout << "Date of Birth: ";
+      std::getline(std::cin, dateOfBirth);
+    }
+    employee.dateOfBirth = dateOfBirth;
+    modified = true;
+    std::cout << "Date of Birth updated successfully.\n";
+    break;
+  }
+  case EmployeeField::IdNumber: {
+    std::cout << "Enter new ID Number (13 digits): ";
+    std::string newId;
+    std::getline(std::cin, newId);
+    while (!isValidIdNumber(newId)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid ID Number. Please enter a 13-digit number\n";
+      std::cout << "ID Number: ";
+      std::getline(std::cin, newId);
+    }
+    employee.idNumber = newId;
+    modified = true;
+    std::cout << "ID Number updated successfully.\n";
+    break;
+  }
+  case EmployeeField::MaritalStatus: {
+    std::cout << "Enter new Marital Status "
+                 "(Single/Married/Divorced/Widowed/Separated): ";
+    std::string maritalStatus;
+    std::getline(std::cin, maritalStatus);
+    maritalStatus = capitaliseFirstLetter(maritalStatus);
+    while (!isValidMaritalStatus(maritalStatus)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid marital status. Please enter Single, Married, "
+                   "Divorced, Widowed, or Separated\n";
+      std::cout << "Marital Status: ";
+      std::getline(std::cin, maritalStatus);
+      maritalStatus = capitaliseFirstLetter(maritalStatus);
+    }
+    employee.maritalStatus = maritalStatus;
+    if (maritalStatus == "Married") {
+      std::cout << "Spouse First Name: ";
+      std::string sFirst;
+      std::getline(std::cin, sFirst);
+      sFirst = capitaliseFirstLetter(sFirst);
+      while (!isValidName(sFirst) || sFirst.empty()) {
+        if (std::cin.eof())
+          return;
+        std::cerr << "Invalid spouse first name. Please enter valid first "
+                     "name(Letters only)\n";
+        std::cout << "Spouse First Name: ";
+        std::getline(std::cin, sFirst);
+        sFirst = capitaliseFirstLetter(sFirst);
+      }
+      employee.spouseFirstName = sFirst;
+
+      std::cout << "Spouse Last Name: ";
+      std::string sLast;
+      std::getline(std::cin, sLast);
+      sLast = capitaliseFirstLetter(sLast);
+      while (!isValidName(sLast) || sLast.empty()) {
+        if (std::cin.eof())
+          return;
+        std::cerr << "Invalid spouse last name. Please enter valid last "
+                     "name(Letters only)\n";
+        std::cout << "Spouse Last Name: ";
+        std::getline(std::cin, sLast);
+        sLast = capitaliseFirstLetter(sLast);
+      }
+      employee.spouseLastName = sLast;
+
+      std::cout << "Spouse Phone Number (optional): ";
+      std::string sPhone;
+      std::getline(std::cin, sPhone);
+      while (!isValidPhoneNumber(sPhone)) {
+        if (std::cin.eof() || sPhone.empty()) {
+          break;
+        }
+        std::cerr << "Invalid spouse phone number. Please enter valid phone "
+                     "number(10 Digits only) or leave blank\n";
+        std::cout << "Spouse Phone Number: ";
+        std::getline(std::cin, sPhone);
+      }
+      employee.spousePhoneNumber = sPhone;
+    } else {
+      employee.spouseFirstName.clear();
+      employee.spouseLastName.clear();
+      employee.spousePhoneNumber.clear();
+    }
+    modified = true;
+    std::cout << "Marital Status updated successfully.\n";
+    break;
+  }
+  case EmployeeField::SpouseFirstName: {
+    std::cout << "Enter new Spouse First Name: ";
+    std::string sFirst;
+    std::getline(std::cin, sFirst);
+    sFirst = capitaliseFirstLetter(sFirst);
+    while (!isValidName(sFirst) || sFirst.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid spouse first name. Please enter valid first "
+                   "name(Letters only)\n";
+      std::cout << "Spouse First Name: ";
+      std::getline(std::cin, sFirst);
+      sFirst = capitaliseFirstLetter(sFirst);
+    }
+    employee.spouseFirstName = sFirst;
+    modified = true;
+    std::cout << "Spouse First Name updated successfully.\n";
+    break;
+  }
+  case EmployeeField::SpouseLastName: {
+    std::cout << "Enter new Spouse Last Name: ";
+    std::string sLast;
+    std::getline(std::cin, sLast);
+    sLast = capitaliseFirstLetter(sLast);
+    while (!isValidName(sLast) || sLast.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid spouse last name. Please enter valid last "
+                   "name(Letters only)\n";
+      std::cout << "Spouse Last Name: ";
+      std::getline(std::cin, sLast);
+      sLast = capitaliseFirstLetter(sLast);
+    }
+    employee.spouseLastName = sLast;
+    modified = true;
+    std::cout << "Spouse Last Name updated successfully.\n";
+    break;
+  }
+  case EmployeeField::SpousePhoneNumber: {
+    std::cout
+        << "Enter new Spouse Phone Number (optional, leave blank to omit): ";
+    std::string sPhone;
+    std::getline(std::cin, sPhone);
+    while (!isValidPhoneNumber(sPhone)) {
+      if (std::cin.eof() || sPhone.empty()) {
+        break;
+      }
+      std::cerr << "Invalid spouse phone number. Please enter valid phone "
+                   "number(10 Digits only) or leave blank\n";
+      std::cout << "Spouse Phone Number: ";
+      std::getline(std::cin, sPhone);
+    }
+    employee.spousePhoneNumber = sPhone;
+    modified = true;
+    std::cout << "Spouse Phone Number updated successfully.\n";
+    break;
+  }
+  case EmployeeField::PhoneNumber: {
+    std::cout << "Enter new Phone Number (optional, leave blank to omit): ";
+    std::string phone;
+    std::getline(std::cin, phone);
+    while (!isValidPhoneNumber(phone)) {
+      if (std::cin.eof() || phone.empty()) {
+        break;
+      }
+      std::cerr << "Invalid phone number. Please enter valid phone number(10 "
+                   "Digits only) or leave blank\n";
+      std::cout << "Phone Number: ";
+      std::getline(std::cin, phone);
+    }
+    employee.phoneNumber = phone;
+    modified = true;
+    std::cout << "Phone Number updated successfully.\n";
+    break;
+  }
+  case EmployeeField::EmailAddress: {
+    std::cout << "Enter new Email Address (optional, leave blank to omit): ";
+    std::string email;
+    std::getline(std::cin, email);
+    while (!isValidEmail(email)) {
+      if (std::cin.eof() || email.empty()) {
+        break;
+      }
+      std::cerr << "Invalid email address. Please enter valid email address or "
+                   "leave blank\n";
+      std::cout << "Email Address: ";
+      std::getline(std::cin, email);
+    }
+    employee.emailAddress = email;
+    modified = true;
+    std::cout << "Email Address updated successfully.\n";
+    break;
+  }
+  case EmployeeField::HouseNumber: {
+    std::cout << "Enter new House Number: ";
+    std::string houseNum;
+    std::getline(std::cin, houseNum);
+    while (houseNum.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid house number. Please enter valid house number\n";
+      std::cout << "House Number: ";
+      std::getline(std::cin, houseNum);
+    }
+    employee.houseNumber = houseNum;
+    modified = true;
+    std::cout << "House Number updated successfully.\n";
+    break;
+  }
+  case EmployeeField::StreetName: {
+    std::cout << "Enter new Street Name: ";
+    std::string street;
+    std::getline(std::cin, street);
+    street = capitaliseFirstLetter(street);
+    while (street.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid street name. Please enter valid street name\n";
+      std::cout << "Street Name: ";
+      std::getline(std::cin, street);
+      street = capitaliseFirstLetter(street);
+    }
+    employee.streetName = street;
+    modified = true;
+    std::cout << "Street Name updated successfully.\n";
+    break;
+  }
+  case EmployeeField::Town: {
+    std::cout << "Enter new Town: ";
+    std::string town;
+    std::getline(std::cin, town);
+    town = capitaliseFirstLetter(town);
+    while (!isValidName(town) || town.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid town. Please enter valid town\n";
+      std::cout << "Town: ";
+      std::getline(std::cin, town);
+      town = capitaliseFirstLetter(town);
+    }
+    employee.town = town;
+    modified = true;
+    std::cout << "Town updated successfully.\n";
+    break;
+  }
+  case EmployeeField::City: {
+    std::cout << "Enter new City: ";
+    std::string city;
+    std::getline(std::cin, city);
+    city = capitaliseFirstLetter(city);
+    while (!isValidName(city) || city.empty()) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid city. Please enter valid city\n";
+      std::cout << "City: ";
+      std::getline(std::cin, city);
+      city = capitaliseFirstLetter(city);
+    }
+    employee.city = city;
+    modified = true;
+    std::cout << "City updated successfully.\n";
+    break;
+  }
+  case EmployeeField::PostalCode: {
+    std::cout << "Enter new Postal Code: ";
+    std::string postalCode;
+    std::getline(std::cin, postalCode);
+    while (!isValidPostalCode(postalCode)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid postal code. Please enter valid postal code\n";
+      std::cout << "Postal Code: ";
+      std::getline(std::cin, postalCode);
+    }
+    employee.postalCode = postalCode;
+    modified = true;
+    std::cout << "Postal Code updated successfully.\n";
+    break;
+  }
+  case EmployeeField::Province: {
+    std::cout << "Enter new Province: ";
+    std::string prov;
+    std::getline(std::cin, prov);
+    prov = capitaliseFirstLetter(prov);
+    while (!isValidProvince(prov)) {
+      if (std::cin.eof())
+        return;
+      std::cerr << "Invalid province. Please enter valid province\n";
+      std::cout << "Province: ";
+      std::getline(std::cin, prov);
+      prov = capitaliseFirstLetter(prov);
+    }
+    employee.province = prov;
+    modified = true;
+    std::cout << "Province updated successfully.\n";
+    break;
+  }
+  case ClockId:
+    break;
+  }
+}
+
+// Function to edit passenger details
+void editDetails(Employee &employee) {
+  std::cout << "Editing employee details...\n";
+  std::cout << "Enter the Clock ID of the employee: ";
   std::string clockId;
   std::getline(std::cin, clockId);
   while (!isValidClockId(clockId)) {
-    std::cerr
-        << "Invalid clock ID. Please enter a valid clock ID (6 digits).\n";
-    std::cout << "Enter clock ID to update employee data: ";
+    if (std::cin.eof())
+      return;
+    std::cerr << "Invalid input. Please enter a valid clock ID.\n";
+    std::cout << "Enter the Clock ID (6 digits): ";
     std::getline(std::cin, clockId);
   }
-  employee.clockId = clockId;
-  std::ifstream inFile("employeeDatabase.txt");
-  std::ofstream outFile("temp.txt");
-  if (!inFile || !outFile) {
-    std::cerr << "Error opening employee database\n";
-    return;
-  }
-  std::string line;
-  std::vector<std::string> record;
-  bool updated = false;
-  while (std::getline(inFile, line)) {
-    if (line == "--------------------------------------") {
-      bool matches = false;
-      for (const std::string &recordLine : record) {
-        if (recordLine == "Clock ID: " + clockId) {
-          matches = true;
-          break;
-        }
+  std::vector<std::vector<std::string>> records =
+      readAllRecords("employeeDatabase.txt");
+  int targetIndex = -1;
+  for (size_t i = 0; i < records.size(); ++i) {
+    for (const auto &line : records[i]) {
+      if (line == "Clock ID: " + clockId) {
+        targetIndex = static_cast<int>(i);
+        break;
       }
-      if (matches) {
-        captureEmployeeData(employee);
-        updated = true;
-        outFile << "Clock ID: " << employee.clockId << "\n";
-        outFile << "Title: " << employee.title << "\n";
-        outFile << "First Name: " << employee.firstName << "\n";
-        outFile << "Last Name: " << employee.lastName << "\n";
-        outFile << "Gender: " << employee.gender << "\n";
-        outFile << "Date of Birth: " << employee.dateOfBirth << "\n";
-        outFile << "Age: " << employee.age << "\n";
-        outFile << "ID Number: " << employee.idNumber << "\n";
-        outFile << "Marital Status: " << employee.maritalStatus << "\n";
-        if (employee.maritalStatus == "Married") {
-          outFile << "Spouse First Name: " << employee.spouseFirstName << "\n";
-          outFile << "Spouse Last Name: " << employee.spouseLastName << "\n";
-          outFile << "Spouse Phone Number: " << employee.spousePhoneNumber
-                  << "\n";
-        }
-        outFile << "Phone Number: " << employee.phoneNumber << "\n";
-        outFile << "Email Address: " << employee.emailAddress << "\n";
-        outFile << "House Number: " << employee.houseNumber << "\n";
-        outFile << "Street Name: " << employee.streetName << "\n";
-        outFile << "Town: " << employee.town << "\n";
-        outFile << "City: " << employee.city << "\n";
-        outFile << "Postal Code: " << employee.postalCode << "\n";
-        outFile << "Province: " << employee.province << "\n";
-        outFile << "Position: " << employee.position << "\n";
-        outFile << "Start Date: " << employee.startDate << "\n";
-        outFile << "Department: " << employee.department << "\n";
-      } else {
-        for (const std::string &recordLine : record) {
-          outFile << recordLine << "\n";
-        }
-      }
-      outFile << line << "\n";
-      record.clear();
-    } else {
-      record.push_back(line);
+    }
+    if (targetIndex != -1) {
+      break;
     }
   }
-  for (const std::string &recordLine : record) {
-    outFile << recordLine << "\n";
+
+  if (targetIndex == -1) {
+    std::cerr << "Employee with clock ID " << clockId << " not found.\n";
+    return;
   }
-  inFile.close();
-  outFile.close();
-  if (updated) {
-    remove("employeeDatabase.txt");
-    rename("temp.txt", "employeeDatabase.txt");
-    std::cout << "Employee data updated successfully.\n";
+
+  employee = parseEmployee(records[targetIndex]);
+  bool modified = false;
+
+  while (true) {
+    std::cout << "\nEmployee with clock number " << clockId << " found:\n";
+    std::cout << "----------------------------------------\n";
+    std::vector<FieldOption> options = getFieldOptions(employee);
+    for (size_t i = 0; i < options.size(); ++i) {
+      std::cout << (i + 1) << ". " << options[i].label << ": "
+                << options[i].currentValue << "\n";
+    }
+    std::cout << "----------------------------------------\n";
+    std::cout << "0. Save and exit\n";
+    std::cout << "Enter the line number you would like to edit (0 to save and "
+                 "exit): ";
+
+    int choice;
+    if (!(std::cin >> choice)) {
+      if (std::cin.eof()) {
+        return;
+      }
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cerr << "Invalid choice. Please enter a valid number.\n";
+      continue;
+    }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if (choice == 0) {
+      break;
+    }
+
+    if (choice < 1 || choice > static_cast<int>(options.size())) {
+      std::cerr << "Invalid choice. Please enter a number between 0 and "
+                << options.size() << ".\n";
+      continue;
+    }
+
+    EmployeeField selectedField = options[choice - 1].field;
+    editSingleField(employee, selectedField, modified);
+  }
+
+  if (modified) {
+    records[targetIndex] = formatEmployeeRecord(employee);
+    if (!writeAllRecords("employeeDatabase.txt", records)) {
+      std::cerr << "Error opening file for writing\n";
+      return;
+    }
+    std::cout << "Employee details updated successfully.\n";
   } else {
-    remove("temp.txt");
-    std::cout << "Employee data not found.\n";
+    std::cout << "No changes made.\n";
   }
 }
 // Function to add employee data
@@ -1129,6 +1790,7 @@ void viewEmployeeData(Employee &employee) {
 void checkDoors(StoreSecurity &storeSecurity) {
   (void)storeSecurity;
   std::cout << "Checking the Security door...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   std::string securityDoor = "Closed";
   std::cout << "The Security Door is " << securityDoor << ".\n";
   return;
@@ -1138,6 +1800,7 @@ void checkDoors(StoreSecurity &storeSecurity) {
 void checkWindows(StoreSecurity &storeSecurity) {
   (void)storeSecurity;
   std::cout << "Checking the windows...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   std::string windows = "Closed";
   std::cout << "The windows are " << windows << "...\n";
   return;
@@ -1147,6 +1810,7 @@ void checkWindows(StoreSecurity &storeSecurity) {
 void checkLights(StoreSecurity &storeSecurity) {
   (void)storeSecurity;
   std::cout << "Checking the lights...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   std::string lights = "On";
   std::cout << "The lights are " << lights << "...\n";
   return;
@@ -1156,6 +1820,7 @@ void checkLights(StoreSecurity &storeSecurity) {
 void checkAlarms(StoreSecurity &storeSecurity) {
   (void)storeSecurity;
   std::cout << "Checking the alarm...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   std::string alarms = "Off";
   std::cout << "The alarm is " << alarms << "...\n";
   return;
@@ -1164,6 +1829,7 @@ void checkAlarms(StoreSecurity &storeSecurity) {
 void checkDropSafe(StoreSecurity &storeSecurity) {
   (void)storeSecurity;
   std::cout << "Checking the drop safe...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   std::string dropSafe = "Closed";
   std::cout << "The drop safe is " << dropSafe << "...\n";
   return;
@@ -1172,6 +1838,7 @@ void checkDropSafe(StoreSecurity &storeSecurity) {
 // Function to view the store security
 void viewStoreSecurity(StoreSecurity &storeSecurity) {
   std::cout << "Viewing the store security status...\n";
+  std::this_thread::sleep_for(std::chrono::seconds(3));
   checkDoors(storeSecurity);
   checkWindows(storeSecurity);
   checkLights(storeSecurity);
@@ -1180,8 +1847,7 @@ void viewStoreSecurity(StoreSecurity &storeSecurity) {
   std::cout << "This is the current store security status.\n";
 }
 // Function to open the store
-void openStore() {
-  StoreSecurity storeSecurity;
+void openStore(StoreSecurity &storeSecurity) {
   std::cout << "Running security checks...\n";
   checkDoors(storeSecurity);
   checkWindows(storeSecurity);
@@ -1193,13 +1859,17 @@ void openStore() {
 // Function to view the store status
 void viewStoreStatus(Department &department) {
   std::cout << "Viewing the store status...\n";
-  checkBakeryDepartment(department);
-  checkGroceryDepartment(department);
-  checkSalesDepartment(department);
-  checkSecurityDepartment(department);
-  checkBeveragesDepartment(department);
+  checkManagementDepartment(department);
   checkHumanResourcesDepartment(department);
+  checkSecurityDepartment(department);
+  checkStockDepartment(department);
+  checkSalesDepartment(department);
+  checkGroceryDepartment(department);
   checkMeatAndSeafoodDepartment(department);
+  checkBeveragesDepartment(department);
+  checkFruitsAndVegetablesDepartment(department);
+  checkBakeryDepartment(department);
+  checkCleaningDepartment(department);
   std::cout << "The store is currently open.\n";
 }
 // Function to access employees information
@@ -1239,7 +1909,7 @@ void accessEmployeesInformation() {
     addEmployeeData(employee);
     break;
   case 3:
-    updateEmployeeData(employee);
+    editDetails(employee);
     break;
   case 4:
     deleteEmployeeData(employee);
@@ -1266,6 +1936,7 @@ void manageTheStore() {
     std::cout << "6. Access Employees Information\n";
     std::cout << "7. Close The Store\n";
     std::cout << "0. Exit\n";
+  
     std::cout << "Please select an option: ";
     int option;
     std::cin >> option;
@@ -1288,39 +1959,85 @@ void manageTheStore() {
     }
     if (option == 1) {
       StoreSecurity storeSecurity;
-      openStore();
-      sleep_for(seconds(5));
-      return;
+      openStore(storeSecurity);
     } else if (option == 2) {
       StoreSecurity storeSecurity;
       viewStoreSecurity(storeSecurity);
-      sleep_for(seconds(5));
-      return;
     } else if (option == 3) {
       Department department;
-      Employee employee;
       viewStoreStatus(department);
-      sleep_for(seconds(5));
-      return;
     } else if (option == 4) {
       Item item;
       stockUpStore(item);
-      sleep_for(seconds(5));
-      return;
     } else if (option == 5) {
-      Employee employee;
-      accessEmployeeInformation(employee);
-      sleep_for(seconds(5));
-      return;
+      Department department;
+      viewStoreStatus(department);
     } else if (option == 6) {
-      // Close the store
+      Employee employee;
+      accessEmployeesInformation();
+    } else if (option == 7) {
+      std::cout << "The store is now closed.\n";
     } else if (option == 0) {
-      std::cout << "Closing the manager's desk... Goodbye!\n";
-      sleep_for(seconds(5));
+      std::cout << "Returning to the main menu...\n";
       break;
     }
   }
 }
+
+void manageSecurity() {
+  std::cout << "Security Management\n";
+  while (true) {
+    std::cout << "1. Open The Store\n";
+    std::cout << "2. View Store Security\n";
+    std::cout << "3. Check Security Door\n";
+    std::cout << "4. Check Windows\n";
+    std::cout << "5. Check Lights\n";
+    std::cout << "6. Check Alarms\n";
+    std::cout << "7. Check Drop Safe\n";
+    std::cout << "0. Exit\n";
+    std::cout << "Please select an option: ";
+    int option;
+    std::cin >> option;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    while (std::cin.fail() || option < 0 || option > 7) {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cerr << "Invalid input. Please try again.\n";
+      std::cout << "1. Open The Store\n";
+      std::cout << "2. View Store Security\n";
+      std::cout << "3. Check Security Door\n";
+      std::cout << "4. Check Windows\n";
+      std::cout << "5. Check Lights\n";
+      std::cout << "6. Check Alarms\n";
+      std::cout << "7. Check Drop Safe\n";
+      std::cout << "0. Exit\n";
+      std::cout << "Please select an option: ";
+      std::cin >> option;
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    StoreSecurity security;
+    if (option == 1) {
+      openStore(security);
+    } else if (option == 2) {
+      viewStoreSecurity(security);
+    } else if (option == 3) {
+      checkDoors(security);
+    } else if (option == 4) {
+      checkWindows(security);
+    } else if (option == 5) {
+      checkLights(security);
+    } else if (option == 6) {
+      checkAlarms(security);
+    } else if (option == 7) {
+      checkDropSafe(security);
+    } else if (option == 0) {
+      std::cout << "Returning to the main menu...\n";
+      break;
+    }
+  }
+}
+
 int main() {
   createEmployeeDataBaseFile();
   createSalesDataBaseFile();
@@ -1357,7 +2074,7 @@ int main() {
     } else if (option == 2) {
       accessEmployeesInformation();
     } else if (option == 3) {
-      // Manage security
+      manageSecurity();
     } else if (option == 0) {
       std::cout << "Closing the manager's desk... Goodbye!\n";
       sleep_for(seconds(2));
