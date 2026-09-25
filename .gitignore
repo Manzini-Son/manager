@@ -27,9 +27,10 @@ RadioPlayer/ffmpeg-git-*-static/
 darkseek/tor_data/
 darkseek/tor_data_test/
 # Data files that look like generated/test data
-**/employeeDatabase.txt
+**/supermarkeEmployeeDatabase.txt
 **/salesDatabase.txt
 **/stockDatabase.txt
+**/managerCredentials.txt
 **/temp.txt
 
 # Large Model and Data Files
