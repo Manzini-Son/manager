@@ -275,13 +275,15 @@ void createAccount() {
   std::cout << "Enter your 13-digit ID Number: ";
   std::getline(std::cin, idNumber);
   while (!isValidIdNumber(idNumber)) {
-    std::cerr << "Invalid ID Number.\nEnter your 13-digit ID Number: ";
+    std::cerr << "Invalid ID Number.\n";
+    std::cout << "Enter your 13-digit ID Number: ";
     std::getline(std::cin, idNumber);
   }
   std::cout << "Create a 4-6 digit PIN: ";
   pin = getPIN();
   while (!isValidPin(pin) || pin.find_first_not_of("0123456789") != std::string::npos) {
-    std::cerr << "PIN must contain 4-6 digits.\nCreate a 4-6 digit PIN: ";
+    std::cerr << "PIN must contain 4-6 digits.\n";
+    std::cout << "Create a 4-6 digit PIN: ";
     pin = getPIN();
   }
   std::ofstream file("managerCredentials.txt", std::ios::app);
@@ -2221,6 +2223,7 @@ void manageSecurity(SupermarketSecurity &supermarketSecurity, bool canModify) {
 void showMenu(bool &canModify) {
   std::cout << "Please select a task\n";
   while (true) {
+    int option;
     std::cout << "\n";
     std::cout << "--------------------------\n";
     std::cout << "What would you like to do?\n";
@@ -2234,7 +2237,6 @@ void showMenu(bool &canModify) {
     }
     std::cout << "0. Exit\n";
     std::cout << "Selection: ";
-    int option;
     std::cin >> option;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     while (std::cin.fail() || option < 0 || option > (canModify ? 4 : 3)) {
@@ -2309,12 +2311,11 @@ int main () {
     std::cout << "2. Continue as read-only guest\n";
     std::cout << "0. Exit\n";
     std::cout << "Selection: ";
-    std::string choice;
-    std::getline(std::cin, choice);
-    if (choice == "1") {
+    std::cin >> choice;
+    if (choice == 1) {
       createAccount();
       canModify = hasManagerAccounts();
-    } else if (choice == "3") {
+    } else if (choice == 0) {
       exit(0);
     }
   }
