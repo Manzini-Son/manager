@@ -6,14 +6,16 @@
 #include <ios>
 #include <iostream>
 #include <limits>
+#include <algorithm>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <vector>
 #include <termios.h>
+#include <unistd.h>
 
 
 
-using namespace std::this_thread;
 using namespace std::chrono;
 
 std::string capitaliseFirstLetter(std::string word) {
@@ -341,7 +343,7 @@ void manageManagerAccount(bool &canModify) {
   std::cout << "Manager Account\n";
   std::cout << "1. Change manager credentials\n";
   std::cout << "2. Delete manager account\n";
-  std::cout << "0. Return\n";
+  std::cout << "0. Back\n";
   std::cout << "Selection: ";
   std::string choice;
   std::getline(std::cin, choice);
@@ -876,7 +878,7 @@ void accessSupermarketEmployeeInformation(SupermarketEmployee &supermarketEmploy
   } else {
     std::cout << "2. View all Employee Data\n";
   }
-  std::cout << "0. Exit\n";
+  std::cout << "0. Back\n";
   std::cout << "Please select an option: ";
   int option;
   std::cin >> option;
@@ -894,7 +896,7 @@ void accessSupermarketEmployeeInformation(SupermarketEmployee &supermarketEmploy
     } else {
       std::cout << "2. View all Employee Data\n";
     }
-    std::cout << "0. Exit\n";
+    std::cout << "0. Back\n";
     std::cout << "Please select an option: ";
     std::cin >> option;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -1309,7 +1311,7 @@ void editSingleField(SupermarketEmployee &supermarketEmployee, SupermarketEmploy
     std::cout << "Enter new Age: ";
     std::string ageStr;
     std::getline(std::cin, ageStr);
-    while (ageStr.empty() || !all_of(ageStr.begin(), ageStr.end(), ::isdigit) ||
+    while (ageStr.empty() || !std::all_of(ageStr.begin(), ageStr.end(), ::isdigit) ||
            std::stoi(ageStr) < 18 || std::stoi(ageStr) > 65) {
       if (std::cin.eof())
         return;
@@ -2092,7 +2094,7 @@ void manageTheSupermarket(bool canModify) {
       std::cout << "3. Access Departments Information\n";
       std::cout << "4. Access Employees Information\n";
     }
-    std::cout << "0. Exit\n";
+    std::cout << "0. Back\n";
     std::cout << "Please select an option: ";
     int option;
     std::cin >> option;
@@ -2115,7 +2117,7 @@ void manageTheSupermarket(bool canModify) {
         std::cout << "3. Access Departments Information\n";
         std::cout << "4. Access Employees Information\n";
       }
-      std::cout << "0. Exit\n";
+      std::cout << "0. Back\n";
       std::cout << "Please select an option: ";
       std::cin >> option;
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -2167,7 +2169,7 @@ void manageSecurity(SupermarketSecurity &supermarketSecurity, bool canModify) {
       std::cout << "5. Check Alarms\n";
       std::cout << "6. Check Drop Safe\n";
     }
-    std::cout << "0. Exit\n";
+    std::cout << "0. Back\n";
     std::cout << "Please select an option: ";
     int option;
     std::cin >> option;
@@ -2192,7 +2194,7 @@ void manageSecurity(SupermarketSecurity &supermarketSecurity, bool canModify) {
         std::cout << "5. Check Alarms\n";
         std::cout << "6. Check Drop Safe\n";
       }
-      std::cout << "0. Exit\n";
+      std::cout << "0. Back\n";
       std::cout << "Please select an option: ";
       std::cin >> option;
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -2267,7 +2269,7 @@ void showMenu(bool &canModify) {
       manageManagerAccount(canModify);
     } else if (option == 0) {
       std::cout << "Closing the manager's desk... Goodbye!\n";
-      sleep_for(seconds(2));
+      std::this_thread::sleep_for(std::chrono::seconds(2));
       return;
     }
   }

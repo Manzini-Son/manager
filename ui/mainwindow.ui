@@ -1,0 +1,15 @@
+#ifndef AURORAWIDGET_H
+#define AURORAWIDGET_H
+
+#include <QWidget>
+
+class AuroraWidget : public QWidget {
+    Q_OBJECT
+
+public:
+    explicit AuroraWidget(QWidget *parent = nullptr);
+protected:
+    void paintEvent(QPaintEvent *event) override;
+};
+
+#endif // AURORAWIDGET_Hmanzini@fedora:~/ProjectFiles/C++Projects/manager/ui$ 
