@@ -104,7 +104,7 @@ public:
             " border: 1px solid rgba(142, 235, 210, 110); border-radius: 10px;"
             " padding: 12px; font-size: 15px; }");
 
-        auto *send = new QPushButton("Send", bottom);
+        auto *send = new QPushButton("Enter", bottom);
         send->setStyleSheet(
             "QPushButton { color: #06221e; background: #7de2c4;"
             " border: 0; border-radius: 10px; padding: 12px 22px;"
