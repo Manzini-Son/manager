@@ -247,11 +247,12 @@ void checkMeatAndSeafoodDepartment(SupermarketDepartment &supermarketDepartment)
 // void deleteSalesData();
 void checkSupermarketSecurity(SupermarketDepartment &supermarketDepartment);
 void createStockDataBaseFile();
-void saveSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee);
+void saveSupermarketEmployeeData(const SupermarketEmployee &supermarketEmployee);
 void captureSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee);
 void addEmployeeData(SupermarketEmployee &supermarketEmployee);
 void viewSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee);
 void viewSupermarketSecurity(SupermarketSecurity &supermarketSecurity);
+void viewSupermarketEmployeeDataUsingID(SupermarketEmployee &supermarketEmployee);
 void editSupermarketEmployeeInformation(SupermarketEmployee &supermarketEmployee);
 void deleteEmployeeData(SupermarketEmployee &supermarketEmployee);
 void viewAllEmployeeData(SupermarketEmployee &supermarketEmployee);
@@ -260,9 +261,12 @@ void stockUpStore(SupermarketItem &supermarketItem);
 
 // Function to create employee database file if it does not exist
 void createEmployeeDataBaseFile() {
-  std::ifstream existingFile("supermarkeEmployeeDatabase.txt");
+  std::ifstream existingFile("supermarketEmployeeDatabase.txt");
   if (!existingFile.good()) {
-    std::ofstream supermarkeEmployeeDatabaseFile("supermarkeEmployeeDatabase.txt");
+    std::ofstream supermarketEmployeeDatabaseFile("supermarketEmployeeDatabase.txt");
+    if (!supermarketEmployeeDatabaseFile) {
+      std::cerr << "Error creating employee database file\n";
+    }
   }
 }
 bool hasManagerAccounts() {
@@ -826,14 +830,15 @@ void captureSupermarketSalesData() {
   }
 }
 // Function to save employee data
-void saveSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee) {
+void saveSupermarketEmployeeData(const SupermarketEmployee &supermarketEmployee) {
   std::cout << "Saving employee data...\n";
   std::cout << "-----------------------------------\n";
-  std::ofstream outFile("supermarkeEmployeeDatabase.txt", std::ios::app);
+  std::ofstream outFile("supermarketEmployeeDatabase.txt", std::ios::app);
   if (!outFile) {
-    std::cerr << "Error opening file\n";
+    std::cerr << "Error opening supermarketEmployeeDatabase.txt in the current working directory\n";
     return;
   }
+
   outFile << "Title: " << supermarketEmployee.title << "\n";
   outFile << "First Name: " << supermarketEmployee.firstName << "\n";
   outFile << "Middle Name: " << supermarketEmployee.middleName << "\n";
@@ -862,7 +867,10 @@ void saveSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee) {
   outFile << "Department: " << supermarketEmployee.supermarketDepartment << "\n";
   outFile << RECORD_SEPARATOR << "\n";
   outFile.close();
-  std::this_thread::sleep_for(std::chrono::seconds(2));
+  if (!outFile) {
+    std::cerr << "Error writing supermarketEmployeeDatabase.txt\n";
+    return;
+  }
   std::cout << "Employee data saved successfully.\n";
 }
 // Function to access employee information
@@ -920,7 +928,7 @@ void viewAllEmployeeData(SupermarketEmployee &supermarketEmployee) {
   (void)supermarketEmployee;
   std::cout << "Viewing all employee data...\n";
   std::cout << "-----------------------------------\n";
-  std::ifstream inFile("supermarkeEmployeeDatabase.txt");
+  std::ifstream inFile("supermarketEmployeeDatabase.txt");
   if (!inFile) {
     std::cerr << "Error opening file\n";
     return;
@@ -1642,7 +1650,7 @@ void editSupermarketEmployeeInformation(SupermarketEmployee &supermarketEmployee
     std::getline(std::cin, clockId);
   }
   std::vector<std::vector<std::string>> records =
-      readAllRecords("supermarkeEmployeeDatabase.txt");
+      readAllRecords("supermarketEmployeeDatabase.txt");
   int targetIndex = -1;
   for (size_t i = 0; i < records.size(); ++i) {
     for (const auto &line : records[i]) {
@@ -1705,7 +1713,7 @@ void editSupermarketEmployeeInformation(SupermarketEmployee &supermarketEmployee
 
   if (modified) {
     records[targetIndex] = formatEmployeeRecord(supermarketEmployee);
-    if (!writeAllRecords("supermarkeEmployeeDatabase.txt", records)) {
+    if (!writeAllRecords("supermarketEmployeeDatabase.txt", records)) {
       std::cerr << "Error opening file for writing\n";
       return;
     }
@@ -1938,20 +1946,68 @@ void captureSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee) {
     supermarketEmployee.supermarketDepartment = capitaliseFirstLetter(supermarketEmployee.supermarketDepartment);
   }
   saveSupermarketEmployeeData(supermarketEmployee);
+
 }
+// Function to view the employee data, using the ID Number
+void viewSupermarketEmployeeDataUsingID(SupermarketEmployee &supermarketEmployee, const std::string idNumber) {
+  supermarketEmployee.idNumber = idNumber;
+  std::ifstream inFile("supermarketEmployeeDatabase.txt");
+  if (!inFile.good()) {
+    std::cerr << "Error opening file\n";
+    return;
+  }
+  std::string line;
+  bool found = false;
+  std::vector<std::string> record;
+  while (std::getline(inFile, line)) {
+    if (line == "--------------------------------------") {
+      // End of record. Check if it contains the target clock ID
+      bool hasClockId = false;
+      for (const auto &l : record) {
+        if (l.find("ID Number: " + idNumber) != std::string::npos) {
+          hasClockId = true;
+          break;
+        }
+      }
+      if (hasClockId) {
+        std::cout << "Employee data found:\n";
+        std::cout << "------------------------------------------------\n";
+        for (const auto &l : record) {
+          std::cout << l << "\n";
+        }
+        std::cout << "------------------------------------------------\n";
+        found = true;
+        break;
+      }
+      record.clear();
+    } else {
+      record.push_back(line);
+    }
+  }
+  if (!found) {
+    std::cout << "Employee's information not found.\n";
+  }
+  inFile.close();
+}
+
 // Function to view the employee data
 void viewSupermarketEmployeeData(SupermarketEmployee &supermarketEmployee) {
   std::cout << "Viewing an employee's data...\n";
-  std::cout << "Enter clock ID to view employee data: ";
+  std::cout << "Enter clock ID or the employee's ID Number to view employee data: ";
   std::string clockId;
+  std::string idNumber;
   std::getline(std::cin, clockId);
   while (!isValidClockId(clockId)) {
+    if (clockId.length() == 13) {
+      viewSupermarketEmployeeDataUsingID(supermarketEmployee, idNumber);
+      return;
+    }
     std::cerr << "Invalid clock ID. Please enter a valid clock ID (6 digits).\n";
     std::cout << "Enter clock ID to view employee data: ";
     std::getline(std::cin, clockId);
   }
   supermarketEmployee.clockId = clockId;
-  std::ifstream inFile("supermarkeEmployeeDatabase.txt");
+  std::ifstream inFile("supermarketEmployeeDatabase.txt");
   if (!inFile.good()) {
     std::cerr << "Error opening file\n";
     return;
@@ -2294,7 +2350,12 @@ int main () {
     while (std::cin.fail() || choice < 0 || choice > 3) {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cerr << "Invalid input. Please select between 1 and 3, or 0 to close the program.\n";
+      std::cerr << "Invalid input. Please select between 1, 2, 3 or 0 to close the program.\n";
+      std::cout << "1. Sign in\n";
+      std::cout << "2. Continue as read-only guest\n";
+      std::cout << "3. Remove manager credentials (system password required)\n";
+      std::cout << "0. Quit.\n";
+      std::cout << "Selection: ";
       std::cin >> choice;
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }

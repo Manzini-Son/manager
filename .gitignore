@@ -28,6 +28,7 @@ darkseek/tor_data/
 darkseek/tor_data_test/
 # Data files that look like generated/test data
 **/supermarkeEmployeeDatabase.txt
+**/supermarketEmployeeDatabase.txt
 **/salesDatabase.txt
 **/stockDatabase.txt
 **/managerCredentials.txt
