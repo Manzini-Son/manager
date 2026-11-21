@@ -1,0 +1,57 @@
+import { Button, LineEdit, Palette, TextEdit } from "std-widgets.slint";
+
+export component MainWindow inherits Window {
+    title: "Manager v1.0.0";
+    preferred-width: 900px;
+    preferred-height: 650px;
+    background: #071724;
+
+    in-out property <string> output-text: "";
+    in-out property <string> input-text: "";
+    in-out property <bool> input-enabled: true;
+    callback submit(string);
+
+    VerticalLayout {
+        padding-left: 38px;
+        padding-right: 38px;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        spacing: 14px;
+
+        Text {
+            text: "MANAGER v1.0.0";
+            color: #e8fff8;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 4px;
+        }
+
+        TextEdit {
+            text: root.output-text;
+            read-only: true;
+            font-family: "monospace";
+            font-size: 14px;
+        }
+
+        HorizontalLayout {
+            spacing: 12px;
+
+            LineEdit {
+                text <=> root.input-text;
+                placeholder-text: "Type here...";
+                enabled: root.input-enabled;
+                accepted => root.submit(root.input-text);
+            }
+
+            Button {
+                text: "Enter";
+                enabled: root.input-enabled;
+                clicked => root.submit(root.input-text);
+            }
+        }
+
+        init => {
+            Palette.color-scheme = ColorScheme.dark;
+        }
+    }
+}
